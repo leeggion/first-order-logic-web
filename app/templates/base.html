@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Моё приложение{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <nav>
+        <!-- Меню сайта -->
+        <a href="/">Главная</a>
+    </nav>
+
+    <main>
+        {% block content %}
+        <!-- Потомки подставят сюда свой контент -->
+        {% endblock %}
+    </main>
+
+</body>
+</html>
