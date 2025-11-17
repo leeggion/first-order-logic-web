@@ -1,0 +1,248 @@
+/* ---
+   FOL Converter: Modern & Clean Theme
+   --- */
+
+/* 1. Глобальные переменные (Цветовая схема) */
+:root {
+    --bg-color: #f8f9fa;
+    /* Фон всей страницы (очень светло-серый) */
+    --card-bg: #ffffff;
+    /* Фон для "карточек" (белый) */
+    --fg-color: #212529;
+    /* Основной цвет текста (темно-серый) */
+    --text-muted: #6c757d;
+    /* Второстепенный текст (серый) */
+    --primary-color: #007bff;
+    /* Акцентный цвет (яркий синий) */
+    --primary-hover: #0056b3;
+    /* Акцентный при наведении */
+    --border-color: #dee2e6;
+    /* Цвет границ */
+
+    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    /* Мягкая тень */
+    --radius: 8px;
+    /* Скругление углов */
+}
+
+/* 2. Сброс и Базовые стили */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--fg-color);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Для "приклеенного" футера */
+}
+
+/* 3. Шапка (Header) */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--card-bg);
+    /* Белая шапка */
+    border-bottom: 1px solid var(--border-color);
+}
+
+.brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--fg-color);
+    /* Текст бренда - темный */
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* 4. Контент и Футер (Sticky Footer) */
+.main-content {
+    flex-grow: 1;
+    /* Занимает все доступное место */
+    width: 100%;
+    max-width: 960px;
+    /* Ограничиваем ширину */
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+    /* Больше отступа сверху */
+}
+
+.footer {
+    padding: 1.5rem;
+    text-align: center;
+    background-color: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 2rem;
+}
+
+/* 5. Заголовки и Текст */
+h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+h3 {
+    color: var(--fg-color);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+/* 6. Формы (Input и Button) */
+form {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+input[type="text"] {
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    color: var(--fg-color);
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    /* Чуть меньше радиус для полей */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+input[type="text"]::placeholder {
+    color: var(--text-muted);
+}
+
+/* 7. Кнопки (CTA) */
+button[type="submit"],
+.cta-button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    margin-top: 1rem;
+    /* Отступ кнопки от поля ввода */
+    transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover,
+.cta-button:hover {
+    background-color: var(--primary-hover);
+}
+
+/* 8. Контейнеры с результатами */
+.result-container,
+.result-container-success,
+.result-container-tree,
+.welcome-box {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.result-container-success h3,
+.result-container-tree h3 {
+    /* Стили из display.html, которые мы убрали */
+    margin-top: 1rem;
+}
+
+.result-container-success h3:first-child {
+    margin-top: 0;
+}
+
+
+/* 9. Стилизация вывода (FOL, Pattern, Tree) */
+.fol,
+.pattern-text,
+.tree {
+    font-family: var(--font-mono);
+    background-color: var(--bg-color);
+    /* Светло-серый фон для кода */
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--fg-color);
+    overflow-x: auto;
+    /* Горизонтальный скролл */
+    white-space: pre-wrap;
+}
+
+.tree {
+    /* Стили из display.html, которые мы убрали */
+    overflow-x: auto;
+}
+
+/* 10. Welcome Box (home.html) */
+.welcome-box {
+    text-align: center;
+    padding: 2.5rem;
+}
+
+.welcome-box p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+}
+
+.welcome-box .cta-button {
+    font-size: 1.1rem;
+    padding: 0.8rem 2rem;
+}

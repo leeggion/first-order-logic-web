@@ -1,5 +1,5 @@
 import spacy
-from PatternFactory import PatternFactory
+from utilities.PatternFactory import PatternFactory
 
 
 class FolConverterEn:

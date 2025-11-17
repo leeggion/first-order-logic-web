@@ -1,4 +1,4 @@
-from patterns import PATTERNS
+from utilities.patterns import PATTERNS
 
 
 class PatternFactory:
