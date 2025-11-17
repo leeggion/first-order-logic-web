@@ -1,5 +1,5 @@
 from flask import Flask
-from db import db
+from utilities.db import db
 from blueprints.main import main_bp
 
 app = Flask(__name__)

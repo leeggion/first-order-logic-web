@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - FOL Converter{% endblock %}
+
+{% block content %}
+<h1>Конвертация предложения в FOL</h1>
+
+<form method="POST">
+    <label for="sentence">Введите предложение:</label>
+    <input type="text" id="sentence" name="sentence" 
+           placeholder="Введите предложение..." required>
+    <button type="submit">Преобразовать</button>
+</form>
+
+{% if result %}
+    <div class="result-container-success">
+        <h3>Выбранный паттерн:</h3>
+        <div class="pattern-text">{{ result.pattern }}</div>
+        
+        <h3>Формула логики первого порядка (FOL):</h3>
+        <div class="fol">{{ result.fol }}</div>
+    </div>
+    
+    <div class="result-container-tree">
+        <h3>Дерево зависимостей:</h3>
+        <div class="tree">
+            {{ result.tree_html | safe }}
+        </div>
+    </div>
+{% endif %}
+{% endblock %}
