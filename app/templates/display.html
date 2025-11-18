@@ -13,12 +13,14 @@
 </form>
 
 {% if result %}
+<div class="results-wrapper">
+    <h2>Результаты анализа:</h2>
     <div class="result-container-success">
         <h3>Выбранный паттерн:</h3>
         <div class="pattern-text">{{ result.pattern }}</div>
         
-        <h3>Формула логики первого порядка (FOL):</h3>
-        <div class="fol">{{ result.fol }}</div>
+        <h3 class="fol-title">Формула логики первого порядка (FOL):</h3>
+        <div class="fol-formula-text">{{ result.fol }}</div>
     </div>
     
     <div class="result-container-tree">
@@ -27,5 +29,6 @@
             {{ result.tree_html | safe }}
         </div>
     </div>
+</div>
 {% endif %}
 {% endblock %}

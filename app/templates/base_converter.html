@@ -14,17 +14,39 @@
     <button type="submit">Преобразовать</button>
 </form>
 
-{% if pattern %}
-<div class="result-container">
-    <h3>Паттерн:</h3>
-    <p>{{ pattern }}</p>
+<div class="example-container">
+    <strong>Быстрые примеры:</strong>
+    <span class="example-btn" data-example="Every dog barks">SV (Все собаки лают)</span>
+    <span class="example-btn" data-example="Some students are smart">SVC (Некоторые студенты умны)</span>
+    <span class="example-btn" data-example="Every man loves an apple">SVO (Каждый мужчина любит яблоко)</span>
+    <span class="example-btn" data-example="No cat eats anything">Отрицание (Ни одна кошка ничего не ест)</span>
 </div>
-{% endif %}
 
-{% if fol_formula %}
-<div class="result-container">
-    <h3>Результат FOL:</h3>
-    <p>{{ fol_formula }}</p>
+{% if sentence or pattern or fol_formula %}
+<div class="results-wrapper">
+    <h2>Результаты анализа:</h2>
+
+    {% if sentence %}
+    <div class="result-container input-display">
+        <h3>Входное предложение:</h3>
+        <p>{{ sentence }}</p>
+    </div>
+    {% endif %}
+
+    {% if pattern %}
+    <div class="result-container">
+        <h3>Паттерн:</h3>
+        <p>{{ pattern }}</p>
+    </div>
+    {% endif %}
+
+    {% if fol_formula %}
+    <div class="result-container fol-result-container">
+        <h3 class="fol-title">Результат FOL:</h3>
+        <p class="fol-formula-text">{{ fol_formula }}</p>
+    </div>
+    {% endif %}
+    
 </div>
 {% endif %}
 
