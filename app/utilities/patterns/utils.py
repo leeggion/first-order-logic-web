@@ -6,10 +6,13 @@ QUANTIFIER_MAP = {
     'all': '∀',
     'every': '∀',
     'each': '∀',
+    'no': '∀',      # Special case: Universal + Negation
+    'none': '∀',    # Special case
     'a': '∃',
     'an': '∃',
     'some': '∃',
-    'exists': '∃'
+    'exists': '∃',
+    'the': '∃'      # Обычно конкретный объект, упростим до существования
 }
 
 QUANTIFIER_RULE = {

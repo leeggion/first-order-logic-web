@@ -1,28 +1,32 @@
+from typing import Any
 from spacy import displacy
 
 class DependencyVisualizer:
     """
-    Визуализатор синтаксического дерева зависимостей предложения.
-    Используется внутри веб-приложения Flask.
+    Класс для генерации HTML-визуализации синтаксического дерева зависимостей.
 
-    Основные возможности:
-    ---------------------
-    - принимает документ spaCy
-    - генерирует HTML-код с деревом зависимостей
-    - возвращает HTML, готовый для вставки в шаблон Jinja2
+    Использует библиотеку `spacy.displacy` для создания интерактивного
+    дерева, пригодного для встраивания в веб-приложения (например, на Flask).
     """
 
-    def __init__(self, style="dep"):
+    def __init__(self, style: str = "dep"):
+        """
+        Инициализирует визуализатор.
+
+        Args:
+            style (str): Стиль визуализации displacy. По умолчанию: "dep" (зависимости).
+        """
         self.style = style
 
-    def render(self, doc):
+    def render(self, doc: Any) -> str:
         """
-        Преобразует spaCy Doc в HTML-дерево зависимостей.
-        Параметры:
-            doc : spaCy Doc
+        Преобразует объект spaCy Doc в HTML-строку с визуализацией зависимостей.
 
-        Возвращает:
-            HTML-строка с визуализацией displacy
+        Args:
+            doc: Обработанный документ или спан spaCy (spacy.tokens.Doc | Span).
+
+        Returns:
+            str: HTML-строка с визуализацией displacy.
         """
 
         html = displacy.render(

@@ -1,24 +1,40 @@
+from typing import Any, Optional
 import spacy
 from utilities.PatternFactory import PatternFactory
 
 
 class FolConverterEn:
     """
-    Класс для преобразования простых английских утвердительных предложений
-    в формулы логики предикатов (FOL).
+    Класс для преобразования английских предложений в формулы логики предикатов (FOL).
+    
+    В отличие от FolAnalyzerEn, этот класс отвечает только за преобразование логики
+    и не включает визуализацию
 
-    ОГРАНИЧЕНИЯ (те же, что и раньше):
-    - Работает только с простыми предложениями SVO.
-    - Требует явных кванторов (определителей).
-    - Не обрабатывает отрицания, модальность и т.д.
-    - Не решает проблему неоднозначности области действия.
+    ОГРАНИЧЕНИЯ:
+    - Работает только с простыми предложениями.
+    - Не обрабатывает модальность, сложные структуры и т.д.
     """
 
-    def __init__(self, model="en_core_web_sm"):
+    def __init__(self, model: str = "en_core_web_sm"):
+        """
+        Инициализирует конвертер и загружает модель spaCy.
+
+        Args:
+            model (str): Название модели spaCy для загрузки. По умолчанию: "en_core_web_sm".
+        """
         self.nlp = spacy.load(model)
         self.factory = PatternFactory()
 
-    def get_pattern(self, text):
+    def get_pattern(self, text: str) -> Optional[Any]:
+        """
+        Анализирует текст и возвращает объект подходящего паттерна.
+
+        Args:
+            text (str): Входное предложение.
+
+        Returns:
+            Optional[Any]: Объект паттерна (например, SVO, SVC) или строка с ошибкой, если паттерн не найден.
+        """
         doc = self.nlp(text)
 
         pattern = self.factory.get_pattern(doc)
@@ -27,7 +43,16 @@ class FolConverterEn:
 
         return pattern
 
-    def convert_to_fol(self, text):
+    def convert_to_fol(self, text: str) -> str:
+        """
+        Анализирует текст, выбирает паттерн и преобразует его в формулу FOL.
+
+        Args:
+            text (str): Входное предложение.
+
+        Returns:
+            str: Строка с формулой FOL или сообщение об ошибке.
+        """
         doc = self.nlp(text)
 
         pattern = self.factory.get_pattern(doc)
@@ -35,23 +60,3 @@ class FolConverterEn:
             return "[Ошибка] Не удалось определить тип предложения."
 
         return pattern.convert(doc)
-
-
-if __name__ == "__main__":
-    converter_en = FolConverterEn()
-    sentences = [
-        "A student sleeps",  # SV
-        "Every dog barks.",  # SV
-        "Every student is smart",  # SVC
-        "Some cats are cute.",  # SVC
-        "Every cat is animal.",  # SVC
-        "A sky is blue.",  # SVC
-        "Some professor teaches a course",  # SVO
-        "All teachers help each student.",  # SVO
-        "Every student reads a book."  # SVO
-    ]
-    for i in sentences:
-        print(f"Sentence: {i}")
-        print(f"Pattern: {converter_en.get_pattern(i)}")
-        print(f"FOL Formula: {converter_en.convert_to_fol(i)}")
-        print("-" * 30)
