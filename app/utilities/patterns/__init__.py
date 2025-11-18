@@ -17,11 +17,11 @@ PATTERNS = [
     # ASVIODO(),
     # ASVO(),
     # SVAA(),
+    SVIODO(),
     SVO(),
     SVC(),
-    # SVA(),
-    # SVIODO(),
-    SV(),
+    SVA(),
     # SVOA(),
-    # SVOC()
+    # SVOC(),
+    SV()
 ]
