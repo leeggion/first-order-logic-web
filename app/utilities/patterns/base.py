@@ -109,14 +109,17 @@ class Base:
 
         # 1. Ищем явный квантор (det)
         for child in token.children:
+            # print(child, child.dep_)
             if child.dep_ == "det":
                 lemma = child.lemma_.lower()
                 if lemma in QUANTIFIER_MAP:
                     quantifier = QUANTIFIER_MAP[lemma]
                     # Если квантор 'no' или 'none', это логическое отрицание
-                    if lemma in ['no', 'none']:
+                    if lemma in ['no', 'none', 'not']:
                         is_quant_neg = True
                     break
+            elif child.dep_ == "neg":
+                is_quant_neg = True
         
         # 2. Если квантор не найден, применяем эвристику (Implicit Quantifiers)
         if quantifier is None:

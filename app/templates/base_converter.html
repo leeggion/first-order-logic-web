@@ -3,51 +3,146 @@
 {% block title %}FOL Converter{% endblock %}
 
 {% block content %}
+<div class="main-content">
 
-<h1>Простое предложение → FOL</h1>
+    <div class="main-form-container">
+        <h1>Простое предложение → FOL</h1>
+        
+        <form method="POST" id="fol-form">
+            <label for="sentence">Введите предложение (английское):</label>
+            <input type="text" id="sentence" name="sentence" 
+                   placeholder="Например: Every man loves an apple"
+                   value="{{ sentence or '' }}" required autocomplete="off">
+            <button type="submit">Преобразовать</button>
+        </form>
+    </div>
 
-<form method="POST">
-    <label for="sentence">Введите предложение (английское):</label>
-    <input type="text" id="sentence" name="sentence" 
-           placeholder="Например: Every man loves an apple"
-           value="{{ sentence or '' }}" required>
-    <button type="submit">Преобразовать</button>
-</form>
+    <div class="examples-section">
+        <h3>Быстрые примеры:</h3>
+        
+        <div class="pattern-tabs">
+            <button class="tab-btn active" data-target="sv">SV</button>
+            <button class="tab-btn" data-target="svc">SVC</button>
+            <button class="tab-btn" data-target="svo">SVO</button>
+            <button class="tab-btn" data-target="sva">SVA</button>
+            <button class="tab-btn" data-target="sviodo">SVIODO</button>
+        </div>
 
-<div class="example-container">
-    <strong>Быстрые примеры:</strong>
-    <span class="example-btn" data-example="Every dog barks">SV (Все собаки лают)</span>
-    <span class="example-btn" data-example="Some students are smart">SVC (Некоторые студенты умны)</span>
-    <span class="example-btn" data-example="Every man loves an apple">SVO (Каждый мужчина любит яблоко)</span>
-    <span class="example-btn" data-example="No cat eats anything">Отрицание (Ни одна кошка ничего не ест)</span>
+        <div id="sv" class="tab-content active">
+            <div class="example-group">
+                <h4>Базовые</h4>
+                <div class="example-list">
+                    <div class="example-item" data-text="Every dog barks">Every dog barks <span class="translation">Все собаки лают</span></div>
+                    <div class="example-item" data-text="A student sleeps">A student sleeps <span class="translation">Студент спит</span></div>
+                </div>
+            </div>
+            <div class="example-group">
+                <h4>С отрицанием</h4>
+                <div class="example-list">
+                    <div class="example-item" data-text="A student does not sleep">A student does not sleep <span class="translation">Студент не спит</span></div>
+                    <div class="example-item" data-text="No man runs">No man runs <span class="translation">Никто не бежит</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="svc" class="tab-content">
+            <div class="example-group">
+                <h4>Базовые</h4>
+                <div class="example-list">
+                    <div class="example-item" data-text="Some students are smart">Some students are smart <span class="translation">Студенты умны</span></div>
+                    <div class="example-item" data-text="John is a teacher">John is a teacher <span class="translation">Джон учитель</span></div>
+                </div>
+            </div>
+            <div class="example-group">
+                <h4>С отрицанием</h4>
+                <div class="example-list">
+                    <div class="example-item" data-text="The sky is not green">The sky is not green <span class="translation">Небо не зеленое</span></div>
+                    <div class="example-item" data-text="No apple is blue">No apple is blue <span class="translation">Ни одно яблоко не синее</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="svo" class="tab-content">
+            <div class="example-group">
+                <h4>Базовые</h4>
+                <div class="example-list">
+                    <div class="example-item" data-text="Every man loves an apple">Every man loves an apple <span class="translation">Все любят яблоки</span></div>
+                    <div class="example-item" data-text="John eats pizza">John eats pizza <span class="translation">Джон ест пиццу</span></div>
+                </div>
+            </div>
+            <div class="example-group">
+                <h4>С отрицанием</h4>
+                <div class="example-list">
+                    <div class="example-item" data-text="No cat eats anything">No cat eats anything <span class="translation">Кошка ничего не ест</span></div>
+                    <div class="example-item" data-text="A boy does not like school">A boy does not like school <span class="translation">Мальчик не любит школу</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sva" class="tab-content">
+            <div class="example-group">
+                <h4>Базовые</h4>
+                <div class="example-list">
+                    <div class="example-item" data-text="Every child plays here">Every child plays here <span class="translation">Дети играют здесь</span></div>
+                    <div class="example-item" data-text="Dogs run quickly">Dogs run quickly <span class="translation">Собаки бегают быстро</span></div>
+                </div>
+            </div>
+            <div class="example-group">
+                <h4>С отрицанием</h4>
+                <div class="example-list">
+                    <div class="example-item" data-text="No dogs do not run quickly">No dogs do not run quickly <span class="translation">Ни одна собака не медленная</span></div>
+                    <div class="example-item" data-text="John does not walk in the park">John does not walk in the park <span class="translation">Джон не гуляет в парке</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sviodo" class="tab-content">
+            <div class="example-group">
+                <h4>Базовые</h4>
+                <div class="example-list">
+                    <div class="example-item" data-text="The teacher handed the paper to the girl">The teacher handed the paper to the girl <span class="translation">Учитель дал бумагу</span></div>
+                    <div class="example-item" data-text="Parents give children gifts">Parents give children gifts <span class="translation">Родители дарят подарки</span></div>
+                </div>
+            </div>
+            <div class="example-group">
+                <h4>С отрицанием</h4>
+                <div class="example-list">
+                    <div class="example-item" data-text="No doctors gave patients medicine">No doctors gave patients medicine <span class="translation">Врачи не дали лекарств</span></div>
+                    <div class="example-item" data-text="A student did not give a boy a pen">A student did not give a boy a pen <span class="translation">Студент не дал ручку</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% if sentence or pattern or fol_formula %}
+    <div class="result-container results-wrapper">
+        <h2>Результаты анализа:</h2>
+
+        {% if sentence %}
+        <div class="result-container input-display">
+            <h3>Входное предложение:</h3>
+            <p>{{ sentence }}</p>
+        </div>
+        {% endif %}
+
+        {% if pattern %}
+        <div class="result-container">
+            <h3>Паттерн:</h3>
+            <p class="pattern-text">{{ pattern }}</p>
+        </div>
+        {% endif %}
+
+        {% if fol_formula %}
+        <div class="result-container fol-result-container">
+            <h3 class="fol-title">Результат FOL:</h3>
+            <p class="fol">{{ fol_formula }}</p>
+        </div>
+        {% endif %}
+        
+    </div>
+    {% endif %}
+
 </div>
-
-{% if sentence or pattern or fol_formula %}
-<div class="results-wrapper">
-    <h2>Результаты анализа:</h2>
-
-    {% if sentence %}
-    <div class="result-container input-display">
-        <h3>Входное предложение:</h3>
-        <p>{{ sentence }}</p>
-    </div>
-    {% endif %}
-
-    {% if pattern %}
-    <div class="result-container">
-        <h3>Паттерн:</h3>
-        <p>{{ pattern }}</p>
-    </div>
-    {% endif %}
-
-    {% if fol_formula %}
-    <div class="result-container fol-result-container">
-        <h3 class="fol-title">Результат FOL:</h3>
-        <p class="fol-formula-text">{{ fol_formula }}</p>
-    </div>
-    {% endif %}
-    
-</div>
-{% endif %}
 
 {% endblock %}

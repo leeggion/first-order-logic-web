@@ -22,6 +22,10 @@ QUANTIFIER_RULE = {
 
 ROLE_TO_VAR = {
     'nsubj': 'x',
-    'dobj': 'y',
-    'attr': 'z'
+    'nsubjpass': 'w',
+    'dobj': 'y',   
+    'iobj': 'z',
+    'pobj': 'k',       
+    'attr': 'q',
+    "advmod": "r",
 }

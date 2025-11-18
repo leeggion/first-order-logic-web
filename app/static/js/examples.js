@@ -69,3 +69,85 @@ document.addEventListener('DOMContentLoaded', () => {
     setupCopyButton();
     setupExampleButtons();
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+    const examples = document.querySelectorAll('.example-item');
+    const inputField = document.getElementById('sentence');
+    const form = document.getElementById('fol-form');
+
+    // Ключ для хранения активного таба в localStorage
+    const STORAGE_KEY = 'activeTabId';
+
+    // --- 1. Логика переключения табов и СОХРАНЕНИЯ состояния ---
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetId = tab.getAttribute('data-target');
+
+            // 1.1 Сохранение состояния в localStorage
+            localStorage.setItem(STORAGE_KEY, targetId);
+
+            // 1.2 Стандартная логика переключения
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+
+            tab.classList.add('active');
+            const targetContent = document.getElementById(targetId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
+
+    // --- 2. Логика клика по примеру ---
+    examples.forEach(ex => {
+        ex.addEventListener('click', () => {
+            const text = ex.getAttribute('data-text');
+            if (inputField) {
+                inputField.value = text;
+            }
+
+            // Здесь мы не сохраняем состояние, так как клик по примеру 
+            // должен происходить только после выбора активного таба.
+
+            if (form) {
+                form.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+
+            if (inputField) {
+                inputField.focus();
+            }
+        });
+    });
+
+    // --- 3. Инициализация (ВОССТАНОВЛЕНИЕ состояния) ---
+    const storedTabId = localStorage.getItem(STORAGE_KEY);
+
+    if (storedTabId) {
+        // Находим кнопку и контент по сохраненному ID
+        const activeTab = document.querySelector(`.tab-btn[data-target="${storedTabId}"]`);
+        const activeContent = document.getElementById(storedTabId);
+
+        // Если оба элемента найдены, активируем их
+        if (activeTab && activeContent) {
+            // Сначала сбрасываем все (на случай, если Jinja2 не сработал или таб был активен по умолчанию)
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+
+            activeTab.classList.add('active');
+            activeContent.classList.add('active');
+        } else {
+            // Если сохраненный ID неверен или не существует, активируем первый таб
+            tabs[0].classList.add('active');
+            contents[0].classList.add('active');
+        }
+    } else {
+        // Если ничего не сохранено, активируем первый таб по умолчанию
+        tabs[0].classList.add('active');
+        contents[0].classList.add('active');
+    }
+});

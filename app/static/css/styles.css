@@ -300,6 +300,7 @@ button[type="submit"]:hover,
     background-color: #e0e0e0;
     border-color: #999;
 }
+
 .results-wrapper {
     margin-top: 30px;
     padding: 20px;
@@ -312,4 +313,135 @@ button[type="submit"]:hover,
     border-bottom: 2px solid #ccc;
     padding-bottom: 10px;
     margin-bottom: 20px;
+}
+
+/* 11. Стили для иерархического меню примеров (Табы) */
+
+.examples-section {
+    max-width: 960px;
+    /* Ограничить ширину для центрирования */
+    margin: 2rem auto;
+}
+
+.pattern-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+/* Кнопки табов */
+.tab-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 10px 20px;
+    border-radius: 50px;
+    /* Стиль "pill" */
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    background: var(--bg-color);
+    /* Светлее при наведении */
+    transform: translateY(-2px);
+    color: var(--fg-color);
+}
+
+.tab-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+    /* Более выраженная тень */
+    transform: translateY(-1px);
+}
+
+/* Контент табов */
+.tab-content {
+    display: none;
+    /* Скрыто по умолчанию */
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 25px;
+    box-shadow: var(--shadow);
+    /* Анимация: используется JS */
+}
+
+.tab-content.active {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Две колонки для Basic/Negation */
+    gap: 30px;
+}
+
+/* Группы примеров (Базовые / Отрицание) */
+.example-group h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}
+
+.example-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Кликабельный элемент примера */
+.example-item {
+    background: var(--bg-color);
+    padding: 12px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    border-left: 4px solid transparent;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+    color: var(--fg-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 1.3;
+}
+
+.example-item:hover {
+    background: #f1f3f5;
+    /* Чуть темнее */
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    border-left-color: var(--primary-color);
+    color: var(--primary-hover);
+}
+
+.example-item span.translation {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-left: 10px;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 1.5rem 1rem;
+    }
+
+    .tab-content.active {
+        grid-template-columns: 1fr;
+        /* Одна колонка на мобильных */
+        gap: 20px;
+    }
+
+    .pattern-tabs {
+        justify-content: space-around;
+        gap: 5px;
+    }
 }
