@@ -1,7 +1,6 @@
 from flask import Flask
 from utilities.db import db
 from blueprints.main import main_bp
-from blueprints.formalizer import formalizer_bp
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -13,7 +12,6 @@ db.init_app(app)
 
 # регистрируем blueprint
 app.register_blueprint(main_bp)
-app.register_blueprint(formalizer_bp, url_prefix='/formalizer')
 
 # создаём таблицы
 with app.app_context():
