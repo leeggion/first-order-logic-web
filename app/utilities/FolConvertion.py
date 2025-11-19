@@ -15,7 +15,7 @@ class FolConverterEn:
     - Не обрабатывает модальность, сложные структуры и т.д.
     """
 
-    def __init__(self, model: str = "en_core_web_sm"):
+    def __init__(self, model: str = "en_core_web_trf"):
         """
         Инициализирует конвертер и загружает модель spaCy.
 
