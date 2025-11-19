@@ -16,18 +16,18 @@ def call_yandex_neuro(sentence):
             max_output_tokens=500
         )
 
-        print("Status:", getattr(response, 'status', 'Unknown'))
-        print("Full response:", response)
+        # return ("Status:", getattr(response, 'status', 'Unknown'))
+        # return ("Full response:", response)
 
         if hasattr(response, 'output') and hasattr(response.output, 'text'):
-            print("Text:", response.output.text)
+            return (response.output.text)
         elif hasattr(response, 'output_text'):
-            print("Output text:", response.output_text)
+            return (response.output_text)
         else:
-            print("Available attributes:", [attr for attr in dir(response) if not attr.startswith('_')])
+            return ("Available attributes:", [attr for attr in dir(response) if not attr.startswith('_')])
     except Exception as e:
-        print(f"Error: {e}")
-        print(f"Error type: {type(e)}")
+        return (f"Error: {e}")
+        return (f"Error type: {type(e)}")
 def call_gemma(sentence):
     pass
 def call_giga(sentence):
