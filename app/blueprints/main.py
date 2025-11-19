@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request
 from utilities.FolConvertion import FolConverterEn
 from utilities.FolAnalyzer import FolAnalyzerEn
+from utilities.LLMCall import call_yandex_neuro
 converter = FolConverterEn()
 analyzer = FolAnalyzerEn()
 
@@ -33,3 +34,23 @@ def display():
         result = analyzer.analyze(text)
 
     return render_template("display.html", result=result)
+
+@main_bp.route('/predicate', methods=['GET', 'POST'])
+def predicate_form():
+    sentence = None
+    yandex_result = None
+    deepseek_result = None
+    qwen_result = None
+    
+    if request.method == 'POST':
+        sentence = request.form.get('sentence')
+        
+        # Здесь будет вызов API нейросетей
+        # Пока заглушки - замени на реальные вызовы API
+        
+        # Пример вызова нейросетей (заглушки)
+        yandex_result = call_yandex_neuro(sentence)
+    
+    return render_template('predicate.html', 
+                         sentence=sentence,
+                         yandex_result=yandex_result)

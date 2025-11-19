@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Предикатная форма - FOL Converter{% endblock %}
+
+{% block content %}
+<div class="main-content">
+
+    <div class="main-form-container">
+        <h1>Предложение → Предикатная форма</h1>
+        
+        <form method="POST" id="predicate-form">
+            <label for="sentence">Введите предложение (английское):</label>
+            <input type="text" id="sentence" name="sentence" 
+                   placeholder="Например: Every man loves an apple"
+                   value="{{ sentence or '' }}" required autocomplete="off">
+            <button type="submit">Преобразовать</button>
+        </form>
+    </div>
+
+    <div class="examples-section">
+        <h3>Примеры для тестирования:</h3>
+        
+        <div class="example-list">
+            <div class="example-item" data-text="Every dog barks">Every dog barks</div>
+            <div class="example-item" data-text="Some students are smart">Some students are smart</div>
+            <div class="example-item" data-text="John loves Mary">John loves Mary</div>
+            <div class="example-item" data-text="No cat eats vegetables">No cat eats vegetables</div>
+            <div class="example-item" data-text="All humans are mortal">All humans are mortal</div>
+        </div>
+    </div>
+
+    {% if sentence %}
+    <div class="result-container results-wrapper">
+        <h2>Результаты преобразования:</h2>
+
+        <div class="result-container input-display">
+            <h3>Входное предложение:</h3>
+            <p>{{ sentence }}</p>
+        </div>
+
+        <div class="neural-results">
+            <!-- Яндекс Нейро -->
+            <div class="result-container neural-result">
+                <div class="neural-header">
+                    <h3>Яндекс Нейро</h3>
+                    <button class="copy-btn" data-target="yandex-result">Копировать</button>
+                </div>
+                <div class="predicate-formula" id="yandex-result">
+                    {% if yandex_result %}
+                        {{ yandex_result }}
+                    {% else %}
+                        <em>Ожидание ответа от нейросети...</em>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- gemma -->
+            <div class="result-container neural-result">
+                <div class="neural-header">
+                    <h3>gemma</h3>
+                    <button class="copy-btn" data-target="gemma-result">Копировать</button>
+                </div>
+                <div class="predicate-formula" id="gemma-result">
+                    {% if gemma_result %}
+                        {{ gemma_result }}
+                    {% else %}
+                        <em>Ожидание ответа от нейросети...</em>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- giga 3 -->
+            <div class="result-container neural-result">
+                <div class="neural-header">
+                    <h3>giga 3</h3>
+                    <button class="copy-btn" data-target="giga-result">Копировать</button>
+                </div>
+                <div class="predicate-formula" id="giga-result">
+                    {% if giga_result %}
+                        {{ giga_result }}
+                    {% else %}
+                        <em>Ожидание ответа от нейросети...</em>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

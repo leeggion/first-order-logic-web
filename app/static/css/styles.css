@@ -445,3 +445,56 @@ button[type="submit"]:hover,
         gap: 5px;
     }
 }
+
+/* Стили для страницы предикатной формы */
+.neural-results {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.neural-result {
+    border-left: 4px solid var(--primary-color);
+}
+
+.neural-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.neural-header h3 {
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.predicate-formula {
+    font-family: var(--font-mono);
+    background-color: var(--bg-color);
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    white-space: pre-wrap;
+    min-height: 60px;
+}
+
+/* Индикаторы загрузки */
+.loading {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .neural-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .neural-header .copy-btn {
+        align-self: flex-end;
+    }
+}

@@ -9,7 +9,13 @@ services:
       - db
     environment:
       FLASK_ENV: development
+      FLASK_DEBUG: 1
+      FLASK_APP: app.py
     restart: unless-stopped
+    volumes:
+      - .:/app
+    command: flask run --host=0.0.0.0 --reload
+  
 
   db:
     image: postgres:15
