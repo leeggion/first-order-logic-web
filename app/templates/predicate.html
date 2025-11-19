@@ -6,8 +6,18 @@
 <div class="main-content">
 
     <div class="main-form-container">
-        <h1>Предложение → Предикатная форма</h1>
+        <h1>Предложение → LLM предикатная форма </h1>
         
+        <!-- Табы выбора нейросети ДО формы -->
+        <div class="neural-selection">
+            <h3>Выберите нейросеть:</h3>
+            <div class="pattern-tabs">
+                <button class="tab-btn active" data-target="yandex-tab">Яндекс Нейро</button>
+                <button class="tab-btn" data-target="gemma-tab">Gemma</button>
+                <button class="tab-btn" data-target="giga-tab">Giga 3</button>
+            </div>
+        </div>
+
         <form method="POST" id="predicate-form">
             <label for="sentence">Введите предложение (английское):</label>
             <input type="text" id="sentence" name="sentence" 
@@ -38,49 +48,53 @@
             <p>{{ sentence }}</p>
         </div>
 
-        <div class="neural-results">
-            <!-- Яндекс Нейро -->
-            <div class="result-container neural-result">
-                <div class="neural-header">
-                    <h3>Яндекс Нейро</h3>
-                    <button class="copy-btn" data-target="yandex-result">Копировать</button>
-                </div>
-                <div class="predicate-formula" id="yandex-result">
-                    {% if yandex_result %}
-                        {{ yandex_result }}
-                    {% else %}
-                        <em>Ожидание ответа от нейросети...</em>
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- gemma -->
-            <div class="result-container neural-result">
-                <div class="neural-header">
-                    <h3>gemma</h3>
-                    <button class="copy-btn" data-target="gemma-result">Копировать</button>
-                </div>
-                <div class="predicate-formula" id="gemma-result">
-                    {% if gemma_result %}
-                        {{ gemma_result }}
-                    {% else %}
-                        <em>Ожидание ответа от нейросети...</em>
-                    {% endif %}
+        <!-- Контент табов для результатов -->
+        <div class="neural-results-container">
+            <div id="yandex-tab" class="tab-content active">
+                <div class="result-container neural-result">
+                    <div class="neural-header">
+                        <h3>Яндекс Нейро</h3>
+                        <button class="copy-btn" data-target="yandex-result">Копировать</button>
+                    </div>
+                    <div class="predicate-formula" id="yandex-result">
+                        {% if yandex_result %}
+                            {{ yandex_result }}
+                        {% else %}
+                            <em>Ожидание ответа от нейросети...</em>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
-            <!-- giga 3 -->
-            <div class="result-container neural-result">
-                <div class="neural-header">
-                    <h3>giga 3</h3>
-                    <button class="copy-btn" data-target="giga-result">Копировать</button>
+            <div id="gemma-tab" class="tab-content">
+                <div class="result-container neural-result">
+                    <div class="neural-header">
+                        <h3>Gemma</h3>
+                        <button class="copy-btn" data-target="gemma-result">Копировать</button>
+                    </div>
+                    <div class="predicate-formula" id="gemma-result">
+                        {% if gemma_result %}
+                            {{ gemma_result }}
+                        {% else %}
+                            <em>Ожидание ответа от нейросети...</em>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="predicate-formula" id="giga-result">
-                    {% if giga_result %}
-                        {{ giga_result }}
-                    {% else %}
-                        <em>Ожидание ответа от нейросети...</em>
-                    {% endif %}
+            </div>
+
+            <div id="giga-tab" class="tab-content">
+                <div class="result-container neural-result">
+                    <div class="neural-header">
+                        <h3>Giga 3</h3>
+                        <button class="copy-btn" data-target="giga-result">Копировать</button>
+                    </div>
+                    <div class="predicate-formula" id="giga-result">
+                        {% if giga_result %}
+                            {{ giga_result }}
+                        {% else %}
+                            <em>Ожидание ответа от нейросети...</em>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

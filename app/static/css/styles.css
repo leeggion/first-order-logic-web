@@ -446,14 +446,36 @@ button[type="submit"]:hover,
     }
 }
 
-/* Стили для страницы предикатной формы */
-.neural-results {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+/* Стили для выбора нейросети перед формой */
+.neural-selection {
+    margin-bottom: 1.5rem;
+}
+
+.neural-selection h3 {
+    margin-bottom: 1rem;
+    color: var(--fg-color);
+    font-size: 1.1rem;
+}
+
+.neural-selection .pattern-tabs {
+    justify-content: flex-start;
+    margin-bottom: 0;
+}
+
+/* Контейнер для результатов нейросетей */
+.neural-results-container {
     margin-top: 1.5rem;
 }
 
+.neural-results-container .tab-content {
+    display: none;
+}
+
+.neural-results-container .tab-content.active {
+    display: block;
+}
+
+/* Стили для результатов нейросетей */
 .neural-result {
     border-left: 4px solid var(--primary-color);
 }
@@ -476,18 +498,23 @@ button[type="submit"]:hover,
     padding: 1rem;
     border-radius: 6px;
     border: 1px solid var(--border-color);
-    white-space: pre-wrap;
     min-height: 60px;
+    text-align: left;
+    margin: 0;
 }
 
-/* Индикаторы загрузки */
-.loading {
-    color: var(--text-muted);
-    font-style: italic;
-}
-
-/* Адаптивность */
+/* Адаптивность для мобильных */
 @media (max-width: 768px) {
+    .neural-selection .pattern-tabs {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .neural-selection .tab-btn {
+        width: 100%;
+        text-align: center;
+    }
+    
     .neural-header {
         flex-direction: column;
         align-items: flex-start;

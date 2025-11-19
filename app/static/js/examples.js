@@ -201,11 +201,70 @@ function setupExampleTabs() {
     }
 }
 
-// Запускаем все функции после полной загрузки DOM
+/**
+ * 7. Логика выбора нейросети ДО формы
+ */
+function setupNeuralSelection() {
+    const neuralTabs = document.querySelectorAll('.neural-selection .tab-btn');
+    const neuralContents = document.querySelectorAll('.neural-results-container .tab-content');
+
+    // Если нет выбора нейросети на странице - выходим
+    if (neuralTabs.length === 0) return;
+
+    // Ключ для хранения выбранной нейросети
+    const NEURAL_SELECTION_KEY = 'selectedNeuralNetwork';
+
+    // Логика выбора нейросети
+    neuralTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetId = tab.getAttribute('data-target');
+
+            // Сохранение выбора в localStorage
+            localStorage.setItem(NEURAL_SELECTION_KEY, targetId);
+
+            // Переключение активного состояния
+            neuralTabs.forEach(t => t.classList.remove('active'));
+            neuralContents.forEach(c => c.classList.remove('active'));
+
+            tab.classList.add('active');
+            const targetContent = document.getElementById(targetId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
+
+    // Инициализация выбора нейросети
+    const storedNeuralId = localStorage.getItem(NEURAL_SELECTION_KEY);
+
+    if (storedNeuralId) {
+        const activeNeuralTab = document.querySelector(`.neural-selection .tab-btn[data-target="${storedNeuralId}"]`);
+        const activeNeuralContent = document.getElementById(storedNeuralId);
+
+        if (activeNeuralTab && activeNeuralContent) {
+            neuralTabs.forEach(t => t.classList.remove('active'));
+            neuralContents.forEach(c => c.classList.remove('active'));
+
+            activeNeuralTab.classList.add('active');
+            activeNeuralContent.classList.add('active');
+        } else {
+            // Если сохраненный выбор невалиден, активируем первый
+            neuralTabs[0].classList.add('active');
+            neuralContents[0].classList.add('active');
+        }
+    } else {
+        // По умолчанию активируем первую нейросеть
+        neuralTabs[0].classList.add('active');
+        neuralContents[0].classList.add('active');
+    }
+}
+
+// Обнови вызов в конце файла:
 document.addEventListener('DOMContentLoaded', () => {
     setupCopyButton();
     setupExampleButtons();
     setupExampleItems();
     setupUniversalCopyButtons();
     setupExampleTabs();
+    setupNeuralSelection();
 });
