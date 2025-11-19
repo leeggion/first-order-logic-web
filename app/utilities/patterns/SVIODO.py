@@ -52,6 +52,17 @@ class SVIODO(Base):
             elif child.dep_ == "prep" and child.lemma_ in ("to", "for"):
                 has_iobj = True
 
+        # если есть dobj, но нет iobj, ищем второй объект: 
+        if has_dobj and not has_iobj:
+            # ищем существительные-сиблинги, не являющиеся dobj/nsubj/prep/neg/aux
+            extra_objs = [
+                child for child in root.children
+                if child.pos_ in ("NOUN", "PROPN", "PRON")
+                and child.dep_ not in ("nsubj", "dobj", "prep", "aux", "neg")
+            ]
+            if extra_objs:
+                has_iobj = True
+                
         return has_subj and has_dobj and has_iobj
 
     def convert(self, doc: Any) -> str:
