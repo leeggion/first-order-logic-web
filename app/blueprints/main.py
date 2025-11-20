@@ -35,7 +35,7 @@ def display():
 
     return render_template("display.html", result=result)
 
-@main_bp.route('/test/neuro', methods=['GET', 'POST'])
+@main_bp.route('/predicate', methods=['GET', 'POST'])
 def predicate_form():
     sentence = None
     yandex_result = None
@@ -44,9 +44,9 @@ def predicate_form():
     
     if request.method == 'POST':
         sentence = request.form.get('sentence')
-        #yandex_result = call_yandex_neuro(sentence)
+        yandex_result = call_yandex_neuro(sentence)
         giga_result = call_giga(sentence)
-        # gemma_result = call_gemma(sentence)
+        gemma_result = call_gemma(sentence)
     
     return render_template('predicate.html', 
                          sentence=sentence,
