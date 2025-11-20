@@ -1,13 +1,15 @@
 from flask import Blueprint, render_template, request
 from utilities.FolConvertion import FolConverterEn
 from utilities.FolAnalyzer import FolAnalyzerEn
-from googletrans import Translator
+from deep_translator import GoogleTranslator
 from utilities.LLMCall import call_yandex_neuro, call_gemma, call_giga
 import re
 
+translator_en=GoogleTranslator(source="ru", target="en")
+translator_ru=GoogleTranslator(source="en", target="ru")
 converter = FolConverterEn()
 analyzer = FolAnalyzerEn()
-translator = Translator()
+# translator = Translator()
 
 main_bp = Blueprint("main", __name__, template_folder="../templates")
 
@@ -55,11 +57,14 @@ def translate_fol_terms(fol_formula: str, target_lang: str) -> str:
     сохраняя всю логическую структуру.
     """
     terms = set(re.findall(r"[A-Za-z]+", fol_formula))
-
+    vars = ["x", "w", "y", "z", "k", "r1", "r2", "r3"]
     translation_map = {}
-
     for term in terms:
-        translated = translator.translate(term, src="en", dest=target_lang).text
+        if term in vars:
+            translation_map[term] = term
+            continue
+        translated = translator_ru.translate(term)
+        # translated = translator.translate(term, src="en", dest=target_lang).text
         translated = translated.replace(" ", "_")
         translation_map[term] = translated
 
@@ -81,12 +86,13 @@ def trans_page():
     if request.method == "POST":
         sentence = request.form.get("sentence")
         if sentence:
-            detection = translator.detect(sentence)
-            detected_lang = detection.lang  # например "ru", "en", "de"
-            if detected_lang != "en":
-                translated_sentence = translator.translate(sentence, dest="en").text
-            else:
-                translated_sentence = sentence
+            translated_sentence = translator_en.translate(sentence)
+            # detection = translator.detect(sentence)
+            # detected_lang = detection.lang  # например "ru", "en", "de"
+            # if detected_lang != "en":
+            #     translated_sentence = translator.translate(sentence, dest="en").text
+            # else:
+            #     translated_sentence = sentence
             fol_formula = converter.convert_to_fol(translated_sentence)
             pattern = converter.get_pattern(translated_sentence)
             fol_formula_native = translate_fol_terms(fol_formula, detected_lang)

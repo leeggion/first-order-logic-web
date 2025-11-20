@@ -2,4 +2,4 @@ flask
 flask_sqlalchemy
 psycopg2-binary
 spacy
-googletrans==4.0.0-rc1
+deep-translator
