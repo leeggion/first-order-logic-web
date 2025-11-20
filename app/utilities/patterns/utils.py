@@ -27,5 +27,7 @@ ROLE_TO_VAR = {
     'iobj': 'z',
     'pobj': 'k',       
     'attr': 'q',
-    "advmod": "r",
+    "advmod": "r1",
+    "acomp": "r2",
+    "amod": "r3",
 }

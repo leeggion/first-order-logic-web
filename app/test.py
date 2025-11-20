@@ -292,6 +292,100 @@ TEST_CASES = [
         "pattern": "SVIODO",
         "desc": "Plural subject with negation → ∀ + ¬",
         "expected_logic": "∀x (Doctor(x) → ∀y (Patient(y) → ∀z (Medicine(z) → ¬Give(x, y, z))))"
+    },
+    # ==========================================
+    # ГРУППА: SVAA (Subject - Verb - Adv - Adv)
+    # Структура: Q1x ( Subj(x) -> Q2y ( Adv1(y) -> Q3z ( Adv2(z) -> Pred(x, y, z) ) ) )
+    # ==========================================
+    {
+        "text": "Dogs run quickly outside.",
+        "pattern": "SVAA",
+        "desc": "SVAA: Все универсальные (Subj=∀ -> Adv наследуют ∀)",
+        "expected_logic": "∀x (Dog(x) → ∀y (Quickly(y) → ∀z (Outside(z) → Run(x, y, z))))"
+    },
+    {
+        "text": "A boy plays in the park today.",
+        "pattern": "SVAA",
+        "desc": "SVAA: Все экзистенциальные (Subj=∃ -> Adv наследуют ∃)",
+        "expected_logic": "∃x (Boy(x) ∧ ∃y (Park(y) ∧ ∃z (Today(z) ∧ Play(x, y, z))))"
+    },
+    {
+        "text": "No bird flies high at night.",
+        "pattern": "SVAA",
+        "desc": "SVAA: Отрицание субъекта (∀ + ¬Pred). Adv наследуют ∀.",
+        "expected_logic": "∀x (Bird(x) → ∀y (High(y) → ∀z (Night(z) → ¬Fly(x, y, z))))"
+    },
+    {
+        "text": "The team works well together.",
+        "pattern": "SVAA",
+        "desc": "SVAA: ∃ Subj. Наречия well/together наследуют ∃.",
+        "expected_logic": "∃x (Team(x) ∧ ∃y (Well(y) ∧ ∃z (Together(z) ∧ Work(x, y, z))))"
+    },
+
+    # ==========================================
+    # ГРУППА: SVOA (Subject - Verb - Object - Adverbial)
+    # Структура: Q1x ( Subj(x) -> Q2y ( Obj(y) -> Q3z ( Adv(z) -> Pred(x, y, z) ) ) )
+    # ==========================================
+    {
+        "text": "I put the book on the table.",
+        "pattern": "SVOA",
+        "desc": "SVOA: ∃ Subj, ∃ Obj, ∃ Adv (Prep phrase)",
+        "expected_logic": "∃x (I(x) ∧ ∃y (Book(y) ∧ ∃z (Table(z) ∧ Put(x, y, z))))"
+    },
+    {
+        "text": "Cats eat fish quickly.",
+        "pattern": "SVOA",
+        "desc": "SVOA: ∀ Subj, ∀ Obj (plural), Adv (inherits ∀ from Subj/Obj context)",
+        # В моей реализации Adv наследует от Subj, если нет det.
+        "expected_logic": "∀x (Cat(x) → ∀y (Fish(y) → ∀z (Quickly(z) → Eat(x, y, z))))"
+    },
+    {
+        "text": "No student put the book on the shelf.",
+        "pattern": "SVOA",
+        "desc": "SVOA: Отрицание субъекта (Negated Predicate). Obj и Adv остаются ∃.",
+        "expected_logic": "∀x (Student(x) → ∃y (Book(y) ∧ ∃z (Shelf(z) ∧ ¬Put(x, y, z))))"
+    },
+    {
+        "text": "John did not put the apple in the bag.",
+        "pattern": "SVOA",
+        "desc": "SVOA: Отрицание глагола (Negated Predicate).",
+        "expected_logic": "∃x (John(x) ∧ ∃y (Apple(y) ∧ ∃z (Bag(z) ∧ ¬Put(x, y, z))))"
+    },
+
+    # ==========================================
+    # ГРУППА: SVOC (Subject - Verb - Object - Complement)
+    # Структура: Q1x ( Subj(x) -> Q2y ( Obj(y) -> Q3z ( Comp(z) -> Pred(x, y, z) ) ) )
+    # Особенность: Comp наследует квантор от Obj.
+    # ==========================================
+    {
+        "text": "They elected him president.",
+        "pattern": "SVOC",
+        "desc": "SVOC: Noun Complement. (Elect x, y as z)",
+        "expected_logic": "∃x (They(x) ∧ ∃y (Him(y) ∧ ∃z (President(z) ∧ Elect(x, y, z))))"
+    },
+    {
+        "text": "The news made the man sad.",
+        "pattern": "SVOC",
+        "desc": "SVOC: Adjective Complement. (Make x, y become z)",
+        "expected_logic": "∃x (News(x) ∧ ∃y (Man(y) ∧ ∃z (Sad(z) ∧ Make(x, y, z))))"
+    },
+    {
+        "text": "Every teacher considers the student smart.",
+        "pattern": "SVOC",
+        "desc": "SVOC: ∀ Subj, ∃ Obj. Comp (smart) наследует ∃ от Obj.",
+        "expected_logic": "∀x (Teacher(x) → ∃y (Student(y) ∧ ∃z (Smart(z) ∧ Consider(x, y, z))))"
+    },
+    {
+        "text": "No judge found the prisoner guilty.",
+        "pattern": "SVOC",
+        "desc": "SVOC: Neg Subj (∀ + ¬Pred). Obj и Comp (guilty) остаются ∃.",
+        "expected_logic": "∀x (Judge(x) → ∃y (Prisoner(y) ∧ ∃z (Guilty(z) ∧ ¬Find(x, y, z))))"
+    },
+    {
+        "text": "A wizard turned the frog green.",
+        "pattern": "SVOC",
+        "desc": "SVOC: Transformation.",
+        "expected_logic": "∃x (Wizard(x) ∧ ∃y (Frog(y) ∧ ∃z (Green(z) ∧ Turn(x, y, z))))"
     }
 ]
 
