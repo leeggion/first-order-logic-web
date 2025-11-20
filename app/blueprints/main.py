@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request
 from utilities.FolConvertion import FolConverterEn
 from utilities.FolAnalyzer import FolAnalyzerEn
 from googletrans import Translator
+from utilities.LLMCall import call_yandex_neuro, call_gemma, call_giga
 import re
 
 converter = FolConverterEn()
@@ -99,3 +100,23 @@ def trans_page():
         fol_formula_native=fol_formula_native,
         pattern=pattern,
     )
+    return render_template("display.html", result=result)
+
+@main_bp.route('/test/neuro', methods=['GET', 'POST'])
+def predicate_form():
+    sentence = None
+    yandex_result = None
+    giga_result = None
+    gemma_result = None
+    
+    if request.method == 'POST':
+        sentence = request.form.get('sentence')
+        yandex_result = call_yandex_neuro(sentence)
+        giga_result = call_giga(sentence)
+        gemma_result = call_gemma(sentence)
+    
+    return render_template('neuro.html', 
+                         sentence=sentence,
+                         yandex_result=yandex_result,
+                        giga_result = giga_result,
+                         gemma_result=gemma_result)

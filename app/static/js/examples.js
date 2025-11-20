@@ -1,3 +1,5 @@
+// examples.js - общие функции для всех страниц
+
 /**
  * 1. Копирование формулы FOL в буфер обмена.
  */
@@ -64,18 +66,65 @@ function setupExampleButtons() {
     });
 }
 
-// Запускаем все функции после полной загрузки DOM
-document.addEventListener('DOMContentLoaded', () => {
-    setupCopyButton();
-    setupExampleButtons();
-});
+/**
+ * 4. Универсальная функция для вставки примеров из .example-item
+ */
+function setupExampleItems() {
+    const examples = document.querySelectorAll('.example-item');
+    const inputField = document.getElementById('sentence');
+    
+    examples.forEach(ex => {
+        ex.addEventListener('click', () => {
+            const text = ex.getAttribute('data-text');
+            if (inputField) {
+                inputField.value = text;
+                inputField.focus();
+            }
+        });
+    });
+}
 
-document.addEventListener('DOMContentLoaded', function () {
+/**
+ * 5. Универсальная функция для копирования текста по data-target
+ */
+function setupUniversalCopyButtons() {
+    const copyButtons = document.querySelectorAll('.copy-btn[data-target]');
+    copyButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const targetElement = document.getElementById(targetId);
+            const text = targetElement.textContent.trim();
+
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    const originalText = this.textContent;
+                    this.textContent = 'Скопировано!';
+                    this.disabled = true;
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.disabled = false;
+                    }, 1500);
+                })
+                .catch(err => {
+                    console.error('Ошибка копирования:', err);
+                    alert('Не удалось скопировать текст.');
+                });
+        });
+    });
+}
+
+/**
+ * 6. Логика табов для страницы с примерами
+ */
+function setupExampleTabs() {
     const tabs = document.querySelectorAll('.tab-btn');
     const contents = document.querySelectorAll('.tab-content');
     const examples = document.querySelectorAll('.example-item');
     const inputField = document.getElementById('sentence');
     const form = document.getElementById('fol-form');
+
+    // Если нет табов на странице - выходим
+    if (tabs.length === 0) return;
 
     // Ключ для хранения активного таба в localStorage
     const STORAGE_KEY = 'activeTabId';
@@ -150,4 +199,72 @@ document.addEventListener('DOMContentLoaded', function () {
         tabs[0].classList.add('active');
         contents[0].classList.add('active');
     }
+}
+
+/**
+ * 7. Логика выбора нейросети ДО формы
+ */
+function setupNeuralSelection() {
+    const neuralTabs = document.querySelectorAll('.neural-selection .tab-btn');
+    const neuralContents = document.querySelectorAll('.neural-results-container .tab-content');
+
+    // Если нет выбора нейросети на странице - выходим
+    if (neuralTabs.length === 0) return;
+
+    // Ключ для хранения выбранной нейросети
+    const NEURAL_SELECTION_KEY = 'selectedNeuralNetwork';
+
+    // Логика выбора нейросети
+    neuralTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetId = tab.getAttribute('data-target');
+
+            // Сохранение выбора в localStorage
+            localStorage.setItem(NEURAL_SELECTION_KEY, targetId);
+
+            // Переключение активного состояния
+            neuralTabs.forEach(t => t.classList.remove('active'));
+            neuralContents.forEach(c => c.classList.remove('active'));
+
+            tab.classList.add('active');
+            const targetContent = document.getElementById(targetId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
+
+    // Инициализация выбора нейросети
+    const storedNeuralId = localStorage.getItem(NEURAL_SELECTION_KEY);
+
+    if (storedNeuralId) {
+        const activeNeuralTab = document.querySelector(`.neural-selection .tab-btn[data-target="${storedNeuralId}"]`);
+        const activeNeuralContent = document.getElementById(storedNeuralId);
+
+        if (activeNeuralTab && activeNeuralContent) {
+            neuralTabs.forEach(t => t.classList.remove('active'));
+            neuralContents.forEach(c => c.classList.remove('active'));
+
+            activeNeuralTab.classList.add('active');
+            activeNeuralContent.classList.add('active');
+        } else {
+            // Если сохраненный выбор невалиден, активируем первый
+            neuralTabs[0].classList.add('active');
+            neuralContents[0].classList.add('active');
+        }
+    } else {
+        // По умолчанию активируем первую нейросеть
+        neuralTabs[0].classList.add('active');
+        neuralContents[0].classList.add('active');
+    }
+}
+
+// Обнови вызов в конце файла:
+document.addEventListener('DOMContentLoaded', () => {
+    setupCopyButton();
+    setupExampleButtons();
+    setupExampleItems();
+    setupUniversalCopyButtons();
+    setupExampleTabs();
+    setupNeuralSelection();
 });

@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Предикатная форма - FOL Converter{% endblock %}
+
+{% block content %}
+<div class="main-content">
+
+    <div class="main-form-container">
+        <h1>Предложение → LLM предикатная форма </h1>
+        
+        <!-- Табы выбора нейросети ДО формы -->
+        <div class="neural-selection">
+            <h3>Выберите нейросеть:</h3>
+            <div class="pattern-tabs">
+                <button class="tab-btn active" data-target="yandex-tab">Яндекс Нейро</button>
+                <button class="tab-btn" data-target="gemma-tab">Gemma</button>
+                <button class="tab-btn" data-target="giga-tab">Giga 3</button>
+            </div>
+        </div>
+
+        <form method="POST" id="predicate-form">
+            <label for="sentence">Введите предложение (английское):</label>
+            <input type="text" id="sentence" name="sentence" 
+                   placeholder="Например: Every man loves an apple"
+                   value="{{ sentence or '' }}" required autocomplete="off">
+            <button type="submit">Преобразовать</button>
+        </form>
+    </div>
+
+    <div class="examples-section">
+        <h3>Примеры для тестирования:</h3>
+        
+        <div class="example-list">
+            <div class="example-item" data-text="Every dog barks">Every dog barks</div>
+            <div class="example-item" data-text="Some students are smart">Some students are smart</div>
+            <div class="example-item" data-text="John loves Mary">John loves Mary</div>
+            <div class="example-item" data-text="No cat eats vegetables">No cat eats vegetables</div>
+            <div class="example-item" data-text="All humans are mortal">All humans are mortal</div>
+        </div>
+    </div>
+
+    {% if sentence %}
+    <div class="result-container results-wrapper">
+        <h2>Результаты преобразования:</h2>
+
+        <div class="result-container input-display">
+            <h3>Входное предложение:</h3>
+            <p>{{ sentence }}</p>
+        </div>
+
+        <!-- Контент табов для результатов -->
+        <div class="neural-results-container">
+            <div id="yandex-tab" class="tab-content active">
+                <div class="result-container neural-result">
+                    <div class="neural-header">
+                        <h3>Яндекс Нейро</h3>
+                        <button class="copy-btn" data-target="yandex-result">Копировать</button>
+                    </div>
+                    <div class="predicate-formula" id="yandex-result">
+                        {% if yandex_result %}
+                            {{ yandex_result }}
+                        {% else %}
+                            <em>Ожидание ответа от нейросети...</em>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div id="gemma-tab" class="tab-content">
+                <div class="result-container neural-result">
+                    <div class="neural-header">
+                        <h3>Gemma</h3>
+                        <button class="copy-btn" data-target="gemma-result">Копировать</button>
+                    </div>
+                    <div class="predicate-formula" id="gemma-result">
+                        {% if gemma_result %}
+                            {{ gemma_result }}
+                        {% else %}
+                            <em>Ожидание ответа от нейросети...</em>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div id="giga-tab" class="tab-content">
+                <div class="result-container neural-result">
+                    <div class="neural-header">
+                        <h3>Giga 3</h3>
+                        <button class="copy-btn" data-target="giga-result">Копировать</button>
+                    </div>
+                    <div class="predicate-formula" id="giga-result">
+                        {% if giga_result %}
+                            {{ giga_result }}
+                        {% else %}
+                            <em>Ожидание ответа от нейросети...</em>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
