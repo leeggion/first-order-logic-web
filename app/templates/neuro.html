@@ -8,13 +8,13 @@
     <div class="main-form-container">
         <h1>Предложение → LLM предикатная форма </h1>
         
-        <!-- Табы выбора нейросети ДО формы -->
         <div class="neural-selection">
             <h3>Выберите нейросеть:</h3>
             <div class="pattern-tabs">
                 <button class="tab-btn active" data-target="yandex-tab">Яндекс Нейро</button>
                 <button class="tab-btn" data-target="gemma-tab">Gemma</button>
                 <button class="tab-btn" data-target="giga-tab">Giga 3</button>
+                <button class="tab-btn" data-target="ensemble-tab">Ансамбль</button>
             </div>
         </div>
 
@@ -48,7 +48,6 @@
             <p>{{ sentence }}</p>
         </div>
 
-        <!-- Контент табов для результатов -->
         <div class="neural-results-container">
             <div id="yandex-tab" class="tab-content active">
                 <div class="result-container neural-result">
@@ -82,10 +81,11 @@
                 </div>
             </div>
 
+
             <div id="giga-tab" class="tab-content">
                 <div class="result-container neural-result">
                     <div class="neural-header">
-                        <h3>Giga 3</h3>
+                        <h3>GigaChat Light</h3>
                         <button class="copy-btn" data-target="giga-result">Копировать</button>
                     </div>
                     <div class="predicate-formula" id="giga-result">
@@ -94,6 +94,57 @@
                         {% else %}
                             <em>Ожидание ответа от нейросети...</em>
                         {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div id="ensemble-tab" class="tab-content">
+                <div class="result-container ensemble-result">
+                    <div class="neural-header">
+                        <h3>Ансамбль моделей</h3>
+                        <button class="copy-btn" data-target="ensemble-result">Копировать</button>
+                    </div>
+                    <div class="ensemble-comparison">
+                        <div class="ensemble-item">
+                            <h4>Яндекс Нейро:</h4>
+                            <div class="predicate-formula" id="ensemble-yandex">
+                                {% if yandex_result %}
+                                    {{ yandex_result }}
+                                {% else %}
+                                    <em>Нет данных</em>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="ensemble-item">
+                            <h4>Gemma:</h4>
+                            <div class="predicate-formula" id="ensemble-gemma">
+                                {% if gemma_result %}
+                                    {{ gemma_result }}
+                                {% else %}
+                                    <em>Нет данных</em>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="ensemble-item">
+                            <h4>Giga 3:</h4>
+                            <div class="predicate-formula" id="ensemble-giga">
+                                {% if giga_result %}
+                                    {{ giga_result }}
+                                {% else %}
+                                    <em>Нет данных</em>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ensemble-consensus">
+                        <h4>Консенсус:</h4>
+                        <div class="predicate-formula" id="ensemble-result">
+                            {% if ensemble_result %}
+                                {{ ensemble_result }}
+                            {% else %}
+                                <em>Анализ результатов...</em>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>

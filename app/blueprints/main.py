@@ -2,8 +2,9 @@ from flask import Blueprint, render_template, request
 from utilities.FolConvertion import FolConverterEn
 from utilities.FolAnalyzer import FolAnalyzerEn
 from deep_translator import GoogleTranslator
-from utilities.LLMCall import call_yandex_neuro, call_gemma, call_giga
+from utilities.LLMCall import call_yandex_neuro, call_gemma, call_giga, to_promt_1, ensemble
 import re
+import time
 
 translator_en=GoogleTranslator(source="ru", target="en")
 translator_ru=GoogleTranslator(source="en", target="ru")
@@ -114,15 +115,20 @@ def predicate_form():
     yandex_result = None
     giga_result = None
     gemma_result = None
+    ensemble_result = None
     
     if request.method == 'POST':
         sentence = request.form.get('sentence')
-        yandex_result = call_yandex_neuro(sentence)
-        giga_result = call_giga(sentence)
-        gemma_result = call_gemma(sentence)
+        yandex_result = call_yandex_neuro(sentence, to_promt_1)
+        giga_result = call_giga(sentence, to_promt_1)
+        gemma_result = call_gemma(sentence, to_promt_1)
+        time.sleep(1)
+        ensemble_result = ensemble(sentence)
     
     return render_template('neuro.html', 
                          sentence=sentence,
                          yandex_result=yandex_result,
                         giga_result = giga_result,
-                         gemma_result=gemma_result)
+                         gemma_result=gemma_result,
+                         ensemble_result=ensemble_result
+                         )
