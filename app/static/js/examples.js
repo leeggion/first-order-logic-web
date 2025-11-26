@@ -1,6 +1,56 @@
 // examples.js - общие функции для всех страниц
 
 /**
+ * 0. Логика переключения между светлой и темной темой.
+ */
+function setupThemeToggle() {
+    // 1. Ищем кнопку переключения (добавлена в base.html)
+    const htmlElement = document.documentElement;
+    const toggleThemeBtn = document.getElementById('theme-toggle'); 
+    const body = document.body;
+    const STORAGE_KEY = 'theme';
+
+    if (!toggleThemeBtn) return;
+
+    function setTheme(isDark) {
+        if (isDark) {
+            htmlElement.classList.add('dark-mode'); // <-- ИСПОЛЬЗУЕМ <html>
+            localStorage.setItem(STORAGE_KEY, 'dark');
+            toggleThemeBtn.innerHTML = '🌞'; 
+            // ...
+        } else {
+            htmlElement.classList.remove('dark-mode'); // <-- ИСПОЛЬЗУЕМ <html>
+            localStorage.setItem(STORAGE_KEY, 'light');
+            toggleThemeBtn.innerHTML = '🌙'; 
+            // ...
+        }
+    }   
+    
+    // 2. Инициализация (Загрузка сохраненной темы или определение системной)
+    const savedTheme = localStorage.getItem(STORAGE_KEY);
+    
+    if (savedTheme === 'dark') {
+        setTheme(true);
+    } else if (savedTheme === 'light') {
+        setTheme(false);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // Если нет сохраненной темы, проверяем системные настройки
+        setTheme(true);
+    } else {
+        // По умолчанию - светлая тема
+        setTheme(false);
+    }
+
+    // 3. Обработчик клика
+    toggleThemeBtn.addEventListener('click', () => {
+        // Определяем текущее состояние
+        const isDark = htmlElement.classList.contains('dark-mode');
+        // Устанавливаем противоположное
+        setTheme(!isDark);
+    });
+}
+
+/**
  * 1. Копирование формулы FOL в буфер обмена.
  */
 function setupCopyButton() {
@@ -261,6 +311,7 @@ function setupNeuralSelection() {
 
 // Обнови вызов в конце файла:
 document.addEventListener('DOMContentLoaded', () => {
+    setupThemeToggle();
     setupCopyButton();
     setupExampleButtons();
     setupExampleItems();

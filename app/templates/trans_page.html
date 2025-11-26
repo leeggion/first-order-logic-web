@@ -9,10 +9,12 @@
         <h1>Простое предложение на некотором языке → google trans → FOL</h1>
         
         <form method="POST" id="fol-form">
-            <label for="sentence">Введите предложение:</label>
-            <input type="text" id="sentence" name="sentence" 
-                   placeholder="Например: Every man loves an apple"
-                   value="{{ sentence or '' }}" required autocomplete="off">
+            <div class="input-wrapper">
+                <label for="sentence">Введите предложение:</label>
+                <input type="text" id="sentence" name="sentence" 
+                    placeholder="Например: Every man loves an apple"
+                    value="{{ sentence or '' }}" required autocomplete="off">
+            </div>
             <button type="submit">Преобразовать</button>
         </form>
     </div>
@@ -200,14 +202,14 @@
         {% if fol_formula %}
         <div class="result-container fol-result-container">
             <h3 class="fol-title">Результат FOL:</h3>
-            <p class="fol">{{ fol_formula }}</p>
+            <p class="fol">{{ fol_formula|highlight_fol|safe }}</p>
         </div>
         {% endif %}
 
         {% if fol_formula_native %}
         <div class="result-container fol-result-container">
             <h3 class="fol-title">FOL (на исходном языке):</h3>
-            <p class="fol">{{ fol_formula_native }}</p>
+            <p class="fol">{{ fol_formula_native|highlight_fol|safe }}</p>
         </div>
         {% endif %}
         

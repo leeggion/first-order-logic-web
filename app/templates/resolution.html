@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Resolution Test{% endblock %}
+
+{% block content %}
+
+<div class="main-content">
+
+    <h1>Проверка выводимости методом резолюций</h1>
+
+    <div class="main-form-container">
+
+        <form method="POST" class="resol-form">
+            <label for="premises">Посылки (по одной в строку)</label>
+            <textarea id="premises" name="premises" class="pretty-input" rows="6">{{ premises or "" }}</textarea>
+            <label for="goal">Заключение</label>
+            <input id="goal" name="goal" type="text" class="pretty-input" value="{{ goal or "" }}">
+            <button type="submit" class="pretty-btn">Проверить резолюцию</button>
+        </form>
+
+    </div>
+
+    {% if result %}
+
+    <div class="results-wrapper">
+
+        <h2>Результаты</h2>
+
+        <div class="result-container">
+            <h3>Посылки (FOL):</h3>
+            <ul>
+                {% for p in fol_premises %}
+                <p class="fol">{{ p|highlight_fol|safe }}</p>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="result-container">
+            <h3>Заключение (FOL):</h3>
+                <p class="fol">{{ fol_goal|highlight_fol|safe }}</p>
+        </div>
+
+        <div class="result-container">
+            <h3>Результат резолюций:</h3>
+            <p class="resolution-status">{{ result }}</p>
+        </div>
+
+        {% if resolution_steps %}
+        <div class="result-container">
+            <h3>Шаги резолюции:</h3>
+            <pre class="resolution-steps">{{ resolution_steps }}</pre>
+        </div>
+
+        {% endif %}
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
