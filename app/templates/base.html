@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}FOL Converter{% endblock %}</title>
-    <link rel="stylesheet" 
-          href="{{ url_for('static', filename='css/styles.css') }}">
-    </head>
+    <script>
+        // Этот скрипт выполняется мгновенно и блокирует отрисовку до применения класса
+        (function () {
+            const savedTheme = localStorage.getItem('theme');
+            // Проверяем, выбрана ли темная тема (сохраненная или системная)
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
 <body>
-    
+
     <header class="header">
         <h1><a href="/" class="brand">FOL Converter</a></h1>
         <nav class="nav-links">
@@ -17,6 +28,9 @@
             <a href="/test/display" class="nav-link">Тест дерева</a>
             <a href="/test/trans_page" class="nav-link">Тест не английского текста</a>
             <a href="/test/neuro" class="nav-link">Тест преобразования (LLM)</a>
+            <a href="/test/resol" class="nav-link">Тест резолюций</a>
+            <button id="theme-toggle" class="nav-link" aria-label="Переключить тему">
+            </button>
         </nav>
     </header>
 
@@ -30,4 +44,5 @@
 
     <script src="{{ url_for('static', filename='js/examples.js') }}"></script>
 </body>
+
 </html>

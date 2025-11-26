@@ -6,9 +6,12 @@
 <h1>Конвертация предложения в FOL</h1>
 
 <form method="POST">
-    <label for="sentence">Введите предложение:</label>
-    <input type="text" id="sentence" name="sentence" 
-           placeholder="Введите предложение..." required>
+    <div class="input-wrapper">
+        <label for="sentence">Введите предложение (английское):</label>
+        <input type="text" id="sentence" name="sentence"
+            placeholder="Например: Every man loves an apple"
+            value="{{ sentence or '' }}" required autocomplete="off">
+    </div>
     <button type="submit">Преобразовать</button>
 </form>
 
@@ -22,7 +25,7 @@
     
     <div class="result-container fol-result-container">
         <h3 class="fol-title">Формула логики первого порядка (FOL):</h3>
-        <p class="fol-formula-text">{{ result.fol }}</p>
+            <p class="fol">{{ result.fol|highlight_fol|safe }}</p>
     </div>
 
     <div class="result-container-tree">

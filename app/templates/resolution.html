@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}Resolution Test{% endblock %}
+
+{% block content %}
+
+{# Локальные стили для таблицы, дополняющие global styles.css #}
+
+<style>
+    .resolution-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 8px;
+        /* Отступы между строками для красивого отображения блоков fol */
+        margin-top: 1rem;
+    }
+
+    .resolution-table th {
+        text-align: left;
+        padding: 0 16px 8px 16px;
+        border-bottom: 2px solid var(--border-color);
+        color: var(--text-muted);
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .resolution-table td {
+        vertical-align: middle;
+        padding: 0 8px;
+    }
+
+    /* Бейджи (Initial, Resolve, Success) */
+    .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        line-height: 1;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .badge.initial {
+        background-color: rgba(108, 117, 125, 0.1);
+        color: var(--text-muted);
+        border: 1px solid var(--border-color);
+    }
+
+    .badge.resolve {
+        background-color: rgba(0, 123, 255, 0.1);
+        color: var(--primary-color);
+        border: 1px solid rgba(0, 123, 255, 0.2);
+    }
+
+    /* Стили для УСПЕХА (Противоречие найдено) - Зеленый */
+    .badge.contradiction {
+        background-color: rgba(40, 167, 69, 0.15);
+        color: #28a745;
+        /* Green */
+        border: 1px solid rgba(40, 167, 69, 0.3);
+    }
+
+    /* Подсветка финальной строки успеха */
+    .contradiction-row td {
+        background-color: rgba(40, 167, 69, 0.05);
+        border-top: 1px solid rgba(40, 167, 69, 0.1);
+        border-bottom: 1px solid rgba(40, 167, 69, 0.1);
+    }
+
+    .contradiction-row td:first-child {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border-left: 1px solid rgba(40, 167, 69, 0.1);
+    }
+
+    .contradiction-row td:last-child {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        border-right: 1px solid rgba(40, 167, 69, 0.1);
+    }
+
+    .step-parents {
+        display: block;
+        margin-top: 4px;
+        font-size: 0.8em;
+        color: var(--text-muted);
+    }
+
+    /* Адаптация под темную тему */
+    html.dark-mode .badge.initial {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #adb5bd;
+    }
+
+    html.dark-mode .badge.contradiction {
+        color: #4cd16e;
+        /* Lighter green for dark mode */
+        border-color: rgba(76, 209, 110, 0.3);
+        background-color: rgba(76, 209, 110, 0.1);
+    }
+
+    html.dark-mode .contradiction-row td {
+        background-color: rgba(40, 167, 69, 0.15);
+    }
+</style>
+
+<div class="main-content">
+
+    <h1>Проверка выводимости методом резолюций</h1>
+
+    <div class="main-form-container">
+
+        <form method="POST" class="resol-form">
+            <label for="premises">Посылки (по одной в строку)</label>
+            <textarea id="premises" name="premises" class="pretty-input" rows="6"
+                placeholder="P(x) -> Q(x)&#10;P(a)">{{ premises or "" }}</textarea>
+
+            <label for="goal">Заключение</label>
+            <input id="goal" name="goal" type="text" class="pretty-input" value="{{ goal or "" }}" placeholder="Q(a)">
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="use_llm_only" name="use_llm_only" value="true" {% if use_llm_only %}checked{%
+                    endif %}>
+                <label for="use_llm_only">Конвертировать только через LLM</label>
+            </div>
+
+            <button type="submit" class="pretty-btn">Проверить резолюцию</button>
+        </form>
+
+    </div>
+
+    {% if result %}
+
+    <div class="results-wrapper">
+
+        <h2>Результаты</h2>
+
+        <div class="result-container">
+            <h3>Посылки (FOL):</h3>
+            {% for p in fol_premises %}
+            <div class="fol" style="margin-bottom: 8px;">{{ p|highlight_fol|safe }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="result-container">
+            <h3>Заключение (FOL):</h3>
+            <div class="fol">{{ fol_goal|highlight_fol|safe }}</div>
+        </div>
+
+        <div class="result-container">
+            <h3>Итог:</h3>
+            {# Если есть слово FAILURE или Ошибка - красный, иначе (успех/пустой дизъюнкт) - зеленый #}
+            {% if "FAILURE" in result or "Ошибка" in result %}
+            <p class="resolution-status" style="color: #dc3545; font-weight: bold; font-size: 1.1rem;">
+                {{ result }}
+            </p>
+            {% else %}
+            <p class="resolution-status" style="color: #28a745; font-weight: bold; font-size: 1.1rem;">
+                {{ result }}
+            </p>
+            {% endif %}
+        </div>
+
+        {% if resolution_steps %}
+        <div class="result-container">
+            <h3>Шаги доказательства:</h3>
+            <div class="table-responsive">
+                <table class="resolution-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;">#</th>
+                            <th>Дизъюнкт (Clause)</th>
+                            <th style="width: 140px;">Тип шага</th>
+                            <th>Унификация</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for step in resolution_steps %}
+                        <tr class="{% if step.info == 'Contradiction' %}contradiction-row{% endif %}">
+                            <td style="text-align: center; color: var(--text-muted); font-weight: bold;">
+                                {{ step.id }}
+                            </td>
+
+                            <td class="clause-cell">
+                                <div class="fol">
+                                    {% if step.info == 'Contradiction' %}
+                                    <p>⊥ (Пустой дизъюнкт)</p>
+                                    {% else %}
+                                    {{ step.clause|highlight_fol|safe }}
+                                    {% endif %}
+                                </div>
+                            </td>
+
+                            <td>
+                                {% if step.info == 'Initial' %}
+                                <span class="badge initial">Initial</span>
+                                {% elif step.info == 'Negated Goal' %}
+                                <span class="badge initial" style="border-color: #ffc107; color: #b68b00;">Neg.
+                                    Goal</span>
+                                {% elif step.info == 'Contradiction' %}
+                                <span class="badge contradiction">Success</span>
+                                <span class="step-parents">from {{ step.parents[0] }}, {{ step.parents[1] }}</span>
+                                {% else %}
+                                <span class="badge resolve">Resolve</span>
+                                <span class="step-parents">({{ step.parents[0] }}, {{ step.parents[1] }})</span>
+                                {% endif %}
+                            </td>
+
+                            <td class="subst-cell"
+                                style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);">
+                                {% if step.substitution and step.substitution != '{}' %}
+                                {{ step.substitution|highlight_fol|safe }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

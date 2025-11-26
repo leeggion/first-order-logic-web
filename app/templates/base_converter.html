@@ -9,10 +9,12 @@
         <h1>Простое предложение → FOL</h1>
         
         <form method="POST" id="fol-form">
-            <label for="sentence">Введите предложение (английское):</label>
-            <input type="text" id="sentence" name="sentence" 
-                   placeholder="Например: Every man loves an apple"
-                   value="{{ sentence or '' }}" required autocomplete="off">
+            <div class="input-wrapper">
+                <label for="sentence">Введите предложение (английское):</label>
+                <input type="text" id="sentence" name="sentence"
+                    placeholder="Например: Every man loves an apple"
+                    value="{{ sentence or '' }}" required autocomplete="off">
+            </div>
             <button type="submit">Преобразовать</button>
         </form>
     </div>
@@ -242,7 +244,7 @@
         {% if fol_formula %}
         <div class="result-container fol-result-container">
             <h3 class="fol-title">Результат FOL:</h3>
-            <p class="fol">{{ fol_formula }}</p>
+            <p class="fol">{{ fol_formula|highlight_fol|safe }}</p>
         </div>
         {% endif %}
         

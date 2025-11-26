@@ -3,9 +3,11 @@ from utilities.FolConvertion import FolConverterEn
 from utilities.FolAnalyzer import FolAnalyzerEn
 from deep_translator import GoogleTranslator
 from utilities.LLMCall import call_yandex_neuro, call_gemma, call_giga, to_promt_1, ensemble
+from utilities.Resolution import run_resolution
 import re
 import time
 
+ERROR_MESSAGE = "[Ошибка] Не удалось определить тип предложения."
 translator_en=GoogleTranslator(source="ru", target="en")
 translator_ru=GoogleTranslator(source="en", target="ru")
 converter = FolConverterEn()
@@ -107,7 +109,6 @@ def trans_page():
         fol_formula_native=fol_formula_native,
         pattern=pattern,
     )
-    return render_template("display.html", result=result)
 
 @main_bp.route('/test/neuro', methods=['GET', 'POST'])
 def predicate_form():
@@ -132,3 +133,65 @@ def predicate_form():
                          gemma_result=gemma_result,
                          ensemble_result=ensemble_result
                          )
+
+def get_fol_with_fallback(text: str, converter, llm_only: bool = False) -> str:
+    if not text.strip():
+        return ""
+    
+    if llm_only:
+        try:
+            fol_from_neuro = ensemble(text)
+            return f"{fol_from_neuro.strip()}"
+        except Exception as e:
+            return f""
+        
+    fol_result = converter.convert_to_fol(text)
+    if fol_result == ERROR_MESSAGE:
+        try:
+            fol_from_neuro = ensemble(text)
+            return f"{fol_from_neuro.strip()}" 
+        except Exception as e:
+            return f""
+        
+    return fol_result
+
+@main_bp.route("/test/resol", methods=["GET", "POST"])
+def resolution_test():
+    if request.method == "GET":
+        return render_template("resolution.html")
+
+    premises_raw = request.form.get("premises", "").strip().split("\n")
+    goal_raw = request.form.get("goal", "").strip()
+    use_llm_only = request.form.get("use_llm_only") == "true"
+    
+    fol_premises = [get_fol_with_fallback(p, converter, use_llm_only) for p in premises_raw if p.strip()]
+    fol_goal = get_fol_with_fallback(goal_raw, converter, use_llm_only)
+    
+    has_error = any("[Ошибка]" in fol for fol in fol_premises) or "[Ошибка]" in fol_goal
+
+    if has_error:
+        result = "FAILURE: Невозможно запустить резолюцию из-за ошибок в конвертации одной или нескольких формул."
+        steps = []
+    else:
+        result, steps = run_resolution(fol_premises, fol_goal)
+
+    return render_template("resolution.html",
+                           premises="\n".join(premises_raw),
+                           goal=goal_raw,
+                           fol_premises=fol_premises,
+                           fol_goal=fol_goal,
+                           result=result,
+                           resolution_steps=steps,
+                           use_llm_only=use_llm_only)
+    
+@main_bp.app_template_filter("highlight_fol")
+def highlight_fol_filter(text: str):
+    if not text:
+        return ""
+    text = re.sub(r"(∀|∃)", r'<span class="quantifier">\1</span>', text)
+    text = re.sub(r"\b([xyzkw])\b", r'<span class="var">\1</span>', text)
+    text = re.sub(r"\b([A-Z][a-zA-Z0-9_]*)\s*\(",
+                  r'<span class="predicate">\1</span>(', text)
+    text = re.sub(r"(¬)", r'<span class="neg">\1</span>', text)
+    text = re.sub(r'_([a-zA-Z0-9]+)', r'<sub>\1</sub>', text)
+    return text

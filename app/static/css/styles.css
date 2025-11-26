@@ -1,34 +1,19 @@
-/* ---
-   FOL Converter: Modern & Clean Theme
-   --- */
-
-/* 1. Глобальные переменные (Цветовая схема) */
+/* 1. Глобальные переменные */
 :root {
     --bg-color: #f8f9fa;
-    /* Фон всей страницы (очень светло-серый) */
     --card-bg: #ffffff;
-    /* Фон для "карточек" (белый) */
     --fg-color: #212529;
-    /* Основной цвет текста (темно-серый) */
     --text-muted: #6c757d;
-    /* Второстепенный текст (серый) */
     --primary-color: #007bff;
-    /* Акцентный цвет (яркий синий) */
     --primary-hover: #0056b3;
-    /* Акцентный при наведении */
     --border-color: #dee2e6;
-    /* Цвет границ */
-
     --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --font-mono: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    /* Мягкая тень */
     --radius: 8px;
-    /* Скругление углов */
 }
 
-/* 2. Сброс и Базовые стили */
+/* 2. Базовые стили */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -47,54 +32,59 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    /* Для "приклеенного" футера */
 }
 
-/* 3. Шапка (Header) */
+/* 3. Шапка  */
 .header {
+    backdrop-filter: blur(14px);
+    background: rgba(255, 255, 255, 0.45);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
-    background-color: var(--card-bg);
-    /* Белая шапка */
-    border-bottom: 1px solid var(--border-color);
+
+    padding: 18px 30px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-.brand {
-    font-size: 1.5rem;
+.header .brand {
+    font-size: 24px;
+    color: #2d2df0;
     font-weight: 700;
-    color: var(--fg-color);
-    /* Текст бренда - темный */
     text-decoration: none;
 }
 
 .nav-links {
     display: flex;
-    gap: 1.5rem;
+    gap: 20px;
 }
 
 .nav-link {
-    color: var(--text-muted);
     text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
+    font-size: 16px;
+    color: #333;
+    padding: 8px 14px;
+    border-radius: 10px;
+    transition: 0.25s ease;
 }
 
 .nav-link:hover {
-    color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.6);
+    color: #2d2df0;
 }
 
-/* 4. Контент и Футер (Sticky Footer) */
+/* 4. Контент и Футер */
 .main-content {
     flex-grow: 1;
-    /* Занимает все доступное место */
     width: 100%;
     max-width: 960px;
-    /* Ограничиваем ширину */
     margin: 0 auto;
     padding: 2.5rem 2rem;
-    /* Больше отступа сверху */
 }
 
 .footer {
@@ -146,7 +136,6 @@ input[type="text"] {
     padding: 0.75rem 1rem;
     font-size: 1rem;
     border-radius: 6px;
-    /* Чуть меньше радиус для полей */
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -175,7 +164,6 @@ button[type="submit"],
     display: inline-block;
     text-align: center;
     margin-top: 1rem;
-    /* Отступ кнопки от поля ввода */
     transition: background-color 0.2s ease;
 }
 
@@ -199,7 +187,6 @@ button[type="submit"]:hover,
 
 .result-container-success h3,
 .result-container-tree h3 {
-    /* Стили из display.html, которые мы убрали */
     margin-top: 1rem;
 }
 
@@ -214,18 +201,15 @@ button[type="submit"]:hover,
 .tree {
     font-family: var(--font-mono);
     background-color: var(--bg-color);
-    /* Светло-серый фон для кода */
     padding: 1rem;
     border: 1px solid var(--border-color);
     border-radius: 6px;
     color: var(--fg-color);
     overflow-x: auto;
-    /* Горизонтальный скролл */
     white-space: pre-wrap;
 }
 
 .tree {
-    /* Стили из display.html, которые мы убрали */
     overflow-x: auto;
 }
 
@@ -247,7 +231,6 @@ button[type="submit"]:hover,
     padding: 0.8rem 2rem;
 }
 
-/* Стиль для кнопки копирования */
 .copy-btn {
     margin-left: 15px;
     padding: 5px 10px;
@@ -266,11 +249,9 @@ button[type="submit"]:hover,
 
 .copy-btn:disabled {
     background-color: #28a745;
-    /* Зеленый при успехе */
     cursor: not-allowed;
 }
 
-/* Контейнер для примеров */
 .example-container {
     margin-top: 15px;
     padding: 10px 0;
@@ -283,7 +264,6 @@ button[type="submit"]:hover,
     margin-bottom: 5px;
 }
 
-/* Стиль для кнопок-примеров */
 .example-btn {
     display: inline-block;
     padding: 3px 8px;
@@ -315,11 +295,10 @@ button[type="submit"]:hover,
     margin-bottom: 20px;
 }
 
-/* 11. Стили для иерархического меню примеров (Табы) */
+/* 11. Стили для иерархического меню примеров */
 
 .examples-section {
     max-width: 960px;
-    /* Ограничить ширину для центрирования */
     margin: 2rem auto;
 }
 
@@ -331,13 +310,11 @@ button[type="submit"]:hover,
     margin-bottom: 20px;
 }
 
-/* Кнопки табов */
 .tab-btn {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     padding: 10px 20px;
     border-radius: 50px;
-    /* Стиль "pill" */
     cursor: pointer;
     font-weight: 600;
     color: var(--text-muted);
@@ -346,7 +323,6 @@ button[type="submit"]:hover,
 
 .tab-btn:hover {
     background: var(--bg-color);
-    /* Светлее при наведении */
     transform: translateY(-2px);
     color: var(--fg-color);
 }
@@ -356,29 +332,23 @@ button[type="submit"]:hover,
     color: white;
     border-color: var(--primary-color);
     box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
-    /* Более выраженная тень */
     transform: translateY(-1px);
 }
 
-/* Контент табов */
 .tab-content {
     display: none;
-    /* Скрыто по умолчанию */
     background: var(--card-bg);
     border-radius: var(--radius);
     padding: 25px;
     box-shadow: var(--shadow);
-    /* Анимация: используется JS */
 }
 
 .tab-content.active {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    /* Две колонки для Basic/Negation */
     gap: 30px;
 }
 
-/* Группы примеров (Базовые / Отрицание) */
 .example-group h4 {
     margin-top: 0;
     margin-bottom: 15px;
@@ -396,7 +366,6 @@ button[type="submit"]:hover,
     gap: 10px;
 }
 
-/* Кликабельный элемент примера */
 .example-item {
     background: var(--bg-color);
     padding: 12px 15px;
@@ -414,7 +383,6 @@ button[type="submit"]:hover,
 
 .example-item:hover {
     background: #f1f3f5;
-    /* Чуть темнее */
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     border-left-color: var(--primary-color);
     color: var(--primary-hover);
@@ -428,7 +396,6 @@ button[type="submit"]:hover,
     opacity: 0.8;
 }
 
-/* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
     .main-content {
         padding: 1.5rem 1rem;
@@ -436,7 +403,6 @@ button[type="submit"]:hover,
 
     .tab-content.active {
         grid-template-columns: 1fr;
-        /* Одна колонка на мобильных */
         gap: 20px;
     }
 
@@ -446,7 +412,6 @@ button[type="submit"]:hover,
     }
 }
 
-/* Стили для выбора нейросети перед формой */
 .neural-selection {
     margin-bottom: 1.5rem;
 }
@@ -462,7 +427,6 @@ button[type="submit"]:hover,
     margin-bottom: 0;
 }
 
-/* Контейнер для результатов нейросетей */
 .neural-results-container {
     margin-top: 1.5rem;
 }
@@ -475,7 +439,6 @@ button[type="submit"]:hover,
     display: block;
 }
 
-/* Стили для результатов нейросетей */
 .neural-result {
     border-left: 4px solid var(--primary-color);
 }
@@ -503,25 +466,381 @@ button[type="submit"]:hover,
     margin: 0;
 }
 
-/* Адаптивность для мобильных */
 @media (max-width: 768px) {
     .neural-selection .pattern-tabs {
         flex-direction: column;
         gap: 5px;
     }
-    
+
     .neural-selection .tab-btn {
         width: 100%;
         text-align: center;
     }
-    
+
     .neural-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
     }
-    
+
     .neural-header .copy-btn {
         align-self: flex-end;
     }
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.input-wrapper label {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.input-wrapper input {
+    padding: 12px 16px;
+    font-size: 1.05rem;
+    border: 2px solid #d6d6d6;
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    background: #fafafa;
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    border-color: #0077ff;
+    background: #fff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+}
+
+button {
+    padding: 12px 22px;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: #0077ff;
+    color: white;
+    transition: 0.25s ease;
+}
+
+button:hover {
+    background: #005cd6;
+}
+
+.fol {
+    font-family: "Fira Code", monospace;
+    font-size: 1.1rem;
+    background: #f7f7f7;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border-left: 4px solid #0077ff;
+    white-space: pre-wrap;
+}
+
+.fol .quantifier {
+    color: #8a2be2;
+    font-weight: bold;
+}
+
+.fol .var {
+    color: #0077ff;
+}
+
+.fol .neg {
+    color: #e60000;
+    font-weight: bold;
+}
+
+.fol .predicate {
+    color: #006600;
+    font-weight: 600;
+}
+
+.resol-form {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+.pretty-input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: #f7f7f9;
+    border: 1px solid #d4d4e0;
+    font-size: 16px;
+    transition: 0.2s ease;
+    resize: vertical;
+}
+
+.pretty-input:focus {
+    background: white;
+    border-color: #6b6bff;
+    box-shadow: 0 0 0 3px rgba(105, 105, 255, 0.2);
+    outline: none;
+}
+
+.pretty-btn {
+    padding: 12px 20px;
+    background: #6b6bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.2s ease;
+}
+
+.pretty-btn:hover {
+    background: #5656e0;
+}
+
+html.dark-mode {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --fg-color: #e0e0e0;
+    --text-muted: #9e9e9e;
+    --primary-color: #7b9cff;
+    --primary-hover: #5681ff;
+    --border-color: #333333;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+html.dark-mode .header {
+    background: #1e1e1e;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    backdrop-filter: none;
+}
+
+html.dark-mode .header .brand {
+    color: var(--primary-color);
+}
+
+html.dark-mode .nav-link {
+    color: var(--fg-color);
+}
+
+html.dark-mode .nav-link:hover {
+    background: #2e2e2e;
+    color: var(--primary-color);
+}
+
+html.dark-mode .fol,
+html.dark-mode .pattern-text,
+html.dark-mode .tree {
+    background-color: #2e2e2e;
+    border-color: #444444;
+    color: var(--fg-color);
+    border-left-color: var(--primary-color);
+}
+
+html.dark-mode .fol {
+    font-family: "Fira Code", monospace;
+    font-size: 1.1rem;
+    background: #2e2e2e;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+    white-space: pre-wrap;
+}
+
+html.dark-mode .fol .quantifier {
+    color: #b088ff;
+    font-weight: bold;
+}
+
+html.dark-mode .fol .var {
+    color: #92baff;
+}
+
+html.dark-mode .fol .neg {
+    color: #ff6b6b;
+    font-weight: bold;
+}
+
+html.dark-mode .fol .predicate {
+    color: #8fbc8f;
+    font-weight: 600;
+}
+
+html.dark-mode .input-wrapper input {
+    background: #2e2e2e;
+    color: var(--fg-color);
+    border-color: #444444;
+}
+
+html.dark-mode .input-wrapper input:focus {
+    background: #2e2e2e;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(123, 156, 255, 0.4);
+}
+
+#theme-toggle {
+    font-size: 1.2rem;
+    line-height: 1;
+    padding: 8px 10px;
+    min-width: 40px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--fg-color);
+    transition: all 0.25s ease;
+}
+
+#theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.6);
+    color: var(--primary-color);
+}
+
+html.dark-mode #theme-toggle {
+    background: transparent;
+    color: var(--fg-color);
+}
+
+html.dark-mode #theme-toggle:hover {
+    background: #2e2e2e;
+    color: var(--primary-color);
+}
+
+html.dark-mode .results-wrapper {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+html.dark-mode .results-wrapper h2 {
+    border-bottom-color: var(--border-color);
+}
+
+html.dark-mode .result-container,
+html.dark-mode .result-container-success,
+html.dark-mode .result-container-tree,
+html.dark-mode .welcome-box,
+html.dark-mode .input-display {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+}
+
+html.dark-mode .fol-result-container {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+}
+
+html.dark-mode .resol-form {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+html.dark-mode .pretty-input {
+    background: #2e2e2e;
+    color: var(--fg-color);
+    border: 1px solid #444444;
+}
+
+html.dark-mode .pretty-input:focus {
+    background: #1e1e1e;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(123, 156, 255, 0.4);
+}
+
+html.dark-mode label {
+    color: var(--fg-color);
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.checkbox-group label {
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--fg-color);
+    user-select: none;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    min-height: 20px;
+}
+
+.checkbox-group label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--text-muted);
+    background-color: var(--card-bg);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.checkbox-group label::after {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(1px, -50%);
+    width: 20px;
+    height: 20px;
+    line-height: 19px;
+    font-size: 14px;
+    color: var(--card-bg);
+    text-align: center;
+    background-color: transparent;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.checkbox-group input[type="checkbox"]:focus+label::before {
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.4);
+    border-color: var(--primary-color);
+}
+
+.checkbox-group input[type="checkbox"]:checked+label::before {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.checkbox-group input[type="checkbox"]:checked+label::after {
+    opacity: 1;
+}
+
+html.dark-mode .checkbox-group label::before {
+    border: 2px solid #555555;
+    background-color: #2e2e2e;
+}
+
+html.dark-mode .checkbox-group input[type="checkbox"]:focus+label::before {
+    box-shadow: 0 0 0 3px rgba(123, 156, 255, 0.4);
+    border-color: var(--primary-color);
+}
+
+html.dark-mode .checkbox-group input[type="checkbox"]:checked+label::after {
+    color: #1e1e1e;
+    color: var(--card-bg);
 }

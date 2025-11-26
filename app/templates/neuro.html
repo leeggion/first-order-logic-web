@@ -19,10 +19,12 @@
         </div>
 
         <form method="POST" id="predicate-form">
-            <label for="sentence">Введите предложение (английское):</label>
-            <input type="text" id="sentence" name="sentence" 
-                   placeholder="Например: Every man loves an apple"
-                   value="{{ sentence or '' }}" required autocomplete="off">
+            <div class="input-wrapper">
+                <label for="sentence">Введите предложение (английское):</label>
+                <input type="text" id="sentence" name="sentence" 
+                    placeholder="Например: Every man loves an apple"
+                    value="{{ sentence or '' }}" required autocomplete="off">
+            </div>
             <button type="submit">Преобразовать</button>
         </form>
     </div>
