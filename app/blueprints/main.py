@@ -3,6 +3,7 @@ from utilities.FolConvertion import FolConverterEn
 from utilities.FolAnalyzer import FolAnalyzerEn
 from deep_translator import GoogleTranslator
 from utilities.LLMCall import call_yandex_neuro, call_gemma, call_giga, to_promt_1, ensemble
+from utilities.Resolution import run_resolution
 import re
 import time
 
@@ -14,16 +15,6 @@ analyzer = FolAnalyzerEn()
 # translator = Translator()
 
 main_bp = Blueprint("main", __name__, template_folder="../templates")
-
-def run_resolution(premises, goal):
-    # Здесь твой резолюционный движок
-    # Возвращает (результат, шаги)
-
-    derived = True
-    steps = "Step 1: ...\nStep 2: ..."
-
-    return ("ENTAILS" if derived else "NOT ENTAILS", steps)
-
 
 @main_bp.route("/")
 def home():
@@ -202,4 +193,5 @@ def highlight_fol_filter(text: str):
     text = re.sub(r"\b([A-Z][a-zA-Z0-9_]*)\s*\(",
                   r'<span class="predicate">\1</span>(', text)
     text = re.sub(r"(¬)", r'<span class="neg">\1</span>', text)
+    text = re.sub(r'_([a-zA-Z0-9]+)', r'<sub>\1</sub>', text)
     return text
