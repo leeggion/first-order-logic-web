@@ -143,9 +143,17 @@ def predicate_form():
                          ensemble_result=ensemble_result
                          )
 
-def get_fol_with_fallback(text: str, converter) -> str:
+def get_fol_with_fallback(text: str, converter, llm_only: bool = False) -> str:
     if not text.strip():
         return ""
+    
+    if llm_only:
+        try:
+            fol_from_neuro = ensemble(text)
+            return f"{fol_from_neuro.strip()}"
+        except Exception as e:
+            return f""
+        
     fol_result = converter.convert_to_fol(text)
     if fol_result == ERROR_MESSAGE:
         try:
@@ -153,6 +161,7 @@ def get_fol_with_fallback(text: str, converter) -> str:
             return f"{fol_from_neuro.strip()}" 
         except Exception as e:
             return f""
+        
     return fol_result
 
 @main_bp.route("/test/resol", methods=["GET", "POST"])
@@ -162,9 +171,10 @@ def resolution_test():
 
     premises_raw = request.form.get("premises", "").strip().split("\n")
     goal_raw = request.form.get("goal", "").strip()
+    use_llm_only = request.form.get("use_llm_only") == "true"
     
-    fol_premises = [get_fol_with_fallback(p, converter) for p in premises_raw if p.strip()]
-    fol_goal = get_fol_with_fallback(goal_raw, converter)
+    fol_premises = [get_fol_with_fallback(p, converter, use_llm_only) for p in premises_raw if p.strip()]
+    fol_goal = get_fol_with_fallback(goal_raw, converter, use_llm_only)
     
     has_error = any("[Ошибка]" in fol for fol in fol_premises) or "[Ошибка]" in fol_goal
 
@@ -180,7 +190,8 @@ def resolution_test():
                            fol_premises=fol_premises,
                            fol_goal=fol_goal,
                            result=result,
-                           resolution_steps=steps)
+                           resolution_steps=steps,
+                           use_llm_only=use_llm_only)
     
 @main_bp.app_template_filter("highlight_fol")
 def highlight_fol_filter(text: str):

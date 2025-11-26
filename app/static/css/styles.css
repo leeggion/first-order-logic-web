@@ -755,3 +755,92 @@ html.dark-mode .pretty-input:focus {
 html.dark-mode label {
     color: var(--fg-color);
 }
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.checkbox-group label {
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--fg-color);
+    user-select: none;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    min-height: 20px;
+}
+
+.checkbox-group label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--text-muted);
+    background-color: var(--card-bg);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.checkbox-group label::after {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(1px, -50%);
+    width: 20px;
+    height: 20px;
+    line-height: 19px;
+    font-size: 14px;
+    color: var(--card-bg);
+    text-align: center;
+    background-color: transparent;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.checkbox-group input[type="checkbox"]:focus+label::before {
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.4);
+    border-color: var(--primary-color);
+}
+
+.checkbox-group input[type="checkbox"]:checked+label::before {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.checkbox-group input[type="checkbox"]:checked+label::after {
+    opacity: 1;
+}
+
+html.dark-mode .checkbox-group label::before {
+    border: 2px solid #555555;
+    background-color: #2e2e2e;
+}
+
+html.dark-mode .checkbox-group input[type="checkbox"]:focus+label::before {
+    box-shadow: 0 0 0 3px rgba(123, 156, 255, 0.4);
+    border-color: var(--primary-color);
+}
+
+html.dark-mode .checkbox-group input[type="checkbox"]:checked+label::after {
+    color: #1e1e1e;
+    color: var(--card-bg);
+}

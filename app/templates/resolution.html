@@ -15,6 +15,10 @@
             <textarea id="premises" name="premises" class="pretty-input" rows="6">{{ premises or "" }}</textarea>
             <label for="goal">Заключение</label>
             <input id="goal" name="goal" type="text" class="pretty-input" value="{{ goal or "" }}">
+            <div class="checkbox-group">
+                <input type="checkbox" id="use_llm_only" name="use_llm_only" value="true" {% if use_llm_only %}checked{% endif %}>
+                <label for="use_llm_only">Конвертировать только через LLM</label>
+            </div>
             <button type="submit" class="pretty-btn">Проверить резолюцию</button>
         </form>
 
